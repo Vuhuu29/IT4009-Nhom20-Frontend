@@ -1,0 +1,322 @@
+{
+  "sdas": [
+    {
+      "id": "1",
+      "content": "Ngoan",
+      "point": "4",
+      "time": "2/1/2022",
+      "type": "Hoạt động",
+      "activity": {
+        "id": 1,
+        "title": "Hoạt động ca hát",
+        "content": "Hoạt động ca hát",
+        "time_start": "12/12/2020",
+        "time_end": "13/12/2020",
+        "avatar": "./khoahoc2.png"
+      },
+      "class_infor": {
+        "id": 1,
+        "time_start": "j",
+        "time_end": "j",
+        "location": "j",
+        "avatar": "./123.jpg",
+        "title": "Hoạt động ngoài trời",
+        "content": "h",
+        "teacher": {
+          "id": 1,
+          "username": "h",
+          "full_name": "h",
+          "achievement": "h",
+          "major": "h",
+          "gender": "h",
+          "avatar": "./123.jpg",
+          "phone_number": "h",
+          "email": "h",
+          "password": "h"
+        },
+        "state": "j"
+      },
+      "student_infor": {
+        "id": 1,
+        "username": "hocsinh",
+        "full_name": "Nguyễn Tuấn Anh",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "about": "test",
+        "birthday": "10/11/2010",
+        "avatar": "./123.jpg",
+        "date_register": null,
+        "date_pay": null,
+        "gender": "nam",
+        "parent": {
+          "id": 2,
+          "full_name": "Vũ Quốc Huynh",
+          "phone_number": "0345475sss336",
+          "birthday": "10/11/2000",
+          "id_card": "7bcad5f5f9b3cb05413ed689f9c85bfc",
+          "email": null
+        }
+      }
+    },
+    {
+      "id": "2",
+      "content": "Lễ phép",
+      "point": "6",
+      "time": "2/1/2022",
+      "type": "Hoạt động",
+      "activity": {
+        "id": 1,
+        "title": "Hoạt động ca hát",
+        "content": "Hoạt động ca hát",
+        "time_start": "12/12/2020",
+        "time_end": "13/12/2020",
+        "avatar": "./khoahoc2.png"
+      },
+      "class_infor": {
+        "id": 1,
+        "time_start": "j",
+        "time_end": "j",
+        "location": "j",
+        "avatar": "./123.jpg",
+        "title": "Hoạt động ngoài trời",
+        "content": "h",
+        "teacher": {
+          "id": 1,
+          "username": "h",
+          "full_name": "h",
+          "achievement": "h",
+          "major": "h",
+          "gender": "h",
+          "avatar": "./123.jpg",
+          "phone_number": "h",
+          "email": "h",
+          "password": "h"
+        },
+        "state": "j"
+      },
+      "student_infor": {
+        "id": 2,
+        "username": "hocsinh",
+        "full_name": "Nguyễn Văn An",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "about": "test",
+        "birthday": "10/11/2010",
+        "avatar": "./123.jpg",
+        "date_register": null,
+        "date_pay": null,
+        "gender": "nam",
+        "parent": {
+          "id": 2,
+          "full_name": "Vũ Quốc Huynh",
+          "phone_number": "0345475sss336",
+          "birthday": "10/11/2000",
+          "id_card": "7bcad5f5f9b3cb05413ed689f9c85bfc",
+          "email": null
+        }
+      }
+    }
+  ],
+  "student": {
+    "status": true,
+    "msg": "get success",
+    "data": [
+      {
+        "id": "1",
+        "full_name": "Nguyễn Hoàng Long",
+        "gender": "nam",
+        "birthday": "11/9/2018"
+      },
+      {
+        "id": "1",
+        "full_name": "Nguyễn Hoàng Sơn",
+        "gender": "nữ",
+        "birthday": "12/8/2018"
+      },
+      {
+        "id": "1",
+        "full_name": "Nguyễn Hoàng Nam",
+        "gender": "nam",
+        "birthday": "13/9/2018"
+      }
+    ]
+  },
+  "classByTeacher": [
+    {
+      "id": 1,
+      "time_start": "12/12/2020",
+      "time_end": "13/12/2020",
+      "location": "Mèo Vạc, Hà Giang",
+      "avatar": "./khoahoc4.jpg",
+      "title": "Lớp học ngoài trời",
+      "content": "Lớp học ngoài trời học sinh 6-8 tuổi",
+      "teacher": {
+        "full_name": "Nguyễn Hoàng Đản",
+        "username": "nguyenhoangdan",
+        "achievement": "Thạc sĩ",
+        "phone_number": "099323823",
+        "major": "Văn nghệ",
+        "gender": "nam",
+        "email": "nguyenhoangdat@gmail.com",
+        "avatar": "./123.jpg",
+        "password": "avasfas"
+      }
+    },
+    {
+      "id": 2,
+      "time_start": "16/12/2020",
+      "time_end": "17/12/2020",
+      "location": "Sóc Sơn, Hà Nội",
+      "avatar": "./khoahoc4.jpg",
+      "title": "Lớp học ngoài trời",
+      "content": "Lớp học ngoài trời học sinh 10-16 tuổi",
+      "teacher": {
+        "full_name": "Nguyễn Hoàng Đản",
+        "username": "nguyenhoangdan",
+        "achievement": "Thạc sĩ",
+        "phone_number": "099323823",
+        "major": "Văn nghệ",
+        "gender": "nam",
+        "email": "nguyenhoangdat@gmail.com",
+        "avatar": "./123.jpg",
+        "password": "avasfas"
+      }
+    }
+  ],
+  "teacher": {
+    "status": true,
+    "data": {
+      "full_name": "Nguyễn Hoàng Nam",
+      "username": "nguyenhoangdan",
+      "achievement": "Thạc sĩ",
+      "phone_number": "099323823",
+      "major": "Văn nghệ",
+      "gender": "nam",
+      "email": "nguyenhoangdat@gmail.com",
+      "avatar": "blob:http://localhost:3000/19c342f4-3abc-44dd-b9ab-ce3207193126",
+      "password": "avasfas"
+    },
+    "msg": "get success"
+  },
+  "activityInClass": {
+    "status": true,
+    "data": [
+      {
+        "id": "1234",
+        "id_class": "1234",
+        "time_start": "11/12/2020",
+        "time_end": "12/12/2020",
+        "title": "Hoạt động văn nghệ",
+        "image": "./123.jpg",
+        "content": "Hoạt động văn nghệ",
+        "state": "string"
+      },
+      {
+        "id": "12345",
+        "id_class": "12345",
+        "time_start": "12/12/2020",
+        "time_end": "13/12/2020",
+        "title": "Hoạt động ăn uống",
+        "image": "./123.jpg",
+        "content": "Hoạt động ăn uống",
+        "state": "string"
+      }
+    ],
+    "msg": "get success"
+  },
+  "class": [
+    {
+      "status": true,
+      "id": 2,
+      "data": {
+        "id": 2,
+        "time_start": "16/12/2020",
+        "time_end": "17/12/2020",
+        "location": "Sóc Sơn, Hà Nội",
+        "avatar": "./khoahoc4.jpg",
+        "title": "Lớp học ngoài trời",
+        "content": "Lớp học ngoài trời học sinh 10-16 tuổi",
+        "teacher": {
+          "name": "Nguyễn Hoàng Đản",
+          "username": "nguyenhoangdan",
+          "achievement": "Thạc sĩ",
+          "phone_number": "099323823",
+          "major": "Văn nghệ",
+          "gender": "nam",
+          "email": "nguyenhoangdat@gmail.com",
+          "avatar": "./123.jpg",
+          "password": "avasfas"
+        }
+      }
+    },
+    {
+      "status": true,
+      "id": 1,
+      "data": {
+        "id": 1,
+        "time_start": "12/12/2020",
+        "time_end": "13/12/2020",
+        "location": "Mèo Vạc, Hà Giang",
+        "avatar": "./khoahoc4.jpg",
+        "title": "Lớp học ngoài trời",
+        "content": "Lớp học ngoài trời học sinh 6-8 tuổi",
+        "teacher": {
+          "name": "Nguyễn Hoàng Đản",
+          "username": "nguyenhoangdan",
+          "achievement": "Thạc sĩ",
+          "phone_number": "099323823",
+          "major": "Văn nghệ",
+          "gender": "nam",
+          "email": "nguyenhoangdat@gmail.com",
+          "avatar": "./123.jpg",
+          "password": "avasfas"
+        }
+      }
+    }
+  ],
+  "studentInClass": {
+    "status": true,
+    "msg": " get success",
+    "data": [
+      {
+        "id": "Long",
+        "full_name": "Lê Hoàng Tôn",
+        "gender": "nam",
+        "birthday": "12/9/2017"
+      },
+      {
+        "id": "Long",
+        "full_name": "Lê Thị Hà",
+        "gender": "nữ",
+        "birthday": "16/9/2017"
+      },
+      {
+        "id": "Long",
+        "full_name": "Nguyễn Văn Chấu",
+        "gender": "nam",
+        "birthday": "12/9/2017"
+      }
+    ]
+  },
+  "rate": {
+  "status": true,
+  "data":[
+   {
+     "id_teacher": "Long",
+      "id_class":"Long",
+     "id_student":"Long",
+      "point": 7,
+      "content": "string",
+       "id_activity":"string",
+       "type":"string"
+   },
+   {
+     "id_teacher": "Long",
+      "id_class":"Long",
+     "id_student":"Long",
+      "point": 7,
+      "content": "string",
+       "id_activity":"string",
+       "type":"string"
+   }],
+  "msg": " get success"
+}
+}

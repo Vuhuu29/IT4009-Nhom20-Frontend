@@ -1,0 +1,52 @@
+img{
+    height: 100%;
+}
+.card-course{
+    margin-top: 30px;
+    margin-right: 10%;
+    margin-left: 10%;
+    border-radius: 5px;
+    border: 1px solid #ff0000;
+    box-shadow: 5px 10px #f36673;
+    text-align: left;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+.card-course p{
+    color: black;
+}
+.card-course .card-sub{
+    font-style: oblique;
+    font-size: 13px;
+    margin-top: 2%;
+}
+.card-course .card-body .card-title{
+    font-size: 20px;
+    font-weight: bolder;
+    color: #d29a61;
+    font-style: initial;
+}
+.card-course .card-body .card-title:hover{
+    color: #f36673;
+}
+.card-course .card-text{
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-course .card-text a{
+    font-size: 15px;
+    color: black;
+    font-weight:normal;
+
+}
+.card-course .read-more{
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: small;
+    color : black;
+}
+.card-course .read-more:hover{
+    color: #008bff;
+}

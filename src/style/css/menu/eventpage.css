@@ -1,0 +1,60 @@
+.eventpage {
+    background:#fdeeee ;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.375;
+    color: #000;
+    text-align: left;
+}
+.slide {
+    height: 600px;
+    overflow: hidden;
+}
+div {
+    display: block;
+}
+.eventpage #content{
+    margin-top: 20px;
+    background-color: #fdeeee;
+}
+
+.content_news img{
+    height: 100%;
+}
+#content .card{
+    max-height: 500px;
+    margin-right: 10%;
+    margin-left: 10%;
+    border: 1px solid #ff0000;
+    box-shadow: 5px 10px #f36673;
+    margin-top: 3%;
+    text-align: left;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+#content p{
+    color: black;
+}
+#content .card-sub{
+    font-style: oblique;
+    font-size: 13px;
+    margin-top: 2%;
+}
+#content .card-title{
+    font-size: 20px;
+    font-weight: bolder;
+    color: #d29a61;
+    font-style: initial;
+}
+#content .card-text a{
+    font-size: 15px;
+    color: black;
+    font-weight:normal;
+}
+#content #first_new{
+    margin-top: 0;
+}
+#content .card-title:hover{
+    color: #008bff;
+}

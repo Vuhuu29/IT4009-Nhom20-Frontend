@@ -1,0 +1,11 @@
+{
+    "status":true,
+    "data":{
+        "id":1,
+        "username":"string",
+        "password":"string",
+        "full_name":"string",
+        "birthday":"string",
+        "gender":true
+    }
+}
