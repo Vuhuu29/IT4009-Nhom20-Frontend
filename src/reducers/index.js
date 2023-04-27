@@ -1,13 +1,8 @@
 import { combineReducers } from 'redux';
-import userReducer from './userReducer';
-import studentReducer from './studentReducer';
-import teacherReducer from './teacherReducer';
-import courseReducer from './courseReducer';
-import classReducer from './classReducer'
+import dataReducer from './DataReducer';
+
+//Tổng hợp lại các reducer
+//combineReducers: dùng để lưu nhiều reducer vào store
 export default combineReducers({
-    userState:userReducer,
-    studentState:studentReducer,
-    teacherState:teacherReducer,
-    courseState:courseReducer,
-    classState:classReducer
+    dataState:dataReducer
 });

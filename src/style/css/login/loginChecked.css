@@ -1,9 +1,0 @@
-.form-check-input:focus {
-    border-color: #e73d79;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem #ffd4d8;
-}
-.form-check-input:checked {
-  background-color: #dc3545;
-  border-color: #dc3545;
-}

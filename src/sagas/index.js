@@ -1,16 +1,9 @@
 import { all } from 'redux-saga/effects';
-import {UserSaga} from './userSaga'
-import  {StudentSaga} from './studentSaga'
-import {TeacherSaga} from './teacherSaga'
-import {CourseSaga} from './courseSaga'
-import {ClassSaga} from './classSaga'
+import {dataSaga} from './dataSaga'
+//các saga sẽ được gom lại trong effect all để chạy
 function* rootSaga() {
   yield all([
-    ...UserSaga,
-    ...StudentSaga,
-    ...TeacherSaga,
-    ...CourseSaga,
-    ...ClassSaga
+    ...dataSaga
   ]);
 }
 export default rootSaga;

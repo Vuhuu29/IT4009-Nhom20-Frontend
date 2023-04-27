@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
-import Routes from './routes';
-import './App.css'
-import MenuScreen from './screens/MenuScreen';
-import Footer from './screens/Footer';
-class App extends Component {
-  render() {
-    return (
-      <div className="App" style={{position:'relative'} }>
-        <Routes />
-        <MenuScreen />
-        <Footer/>
-      </div>
-    );
-  }
+import logo from "./logo.svg";
+import "./App.css";
+import { useSelector, useDispatch } from 'react-redux'
+import {getData} from "./actions"
+
+function App() {
+  const data = useSelector((state) => state.dataState)
+  const dispatch = useDispatch()
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <button onClick={() => dispatch(getData())}>Get data</button>
+        <div>Hello {data}!</div>
+      </header>
+    </div>
+  );
 }
 
 export default App;

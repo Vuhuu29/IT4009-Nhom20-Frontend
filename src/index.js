@@ -1,27 +1,25 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import $ from 'jquery';
-import Popper from 'popper.js';
 import React from 'react';
-import reportWebVitals from './reportWebVitals';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/index';
+import ReactDOM from 'react-dom/client';
+import './index.css';
 import App from './App';
-import logger from 'redux-logger';
+import reportWebVitals from './reportWebVitals';
+//redux
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from './reducers/index';
+//redux saga
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/index';
-import 'bootstrap/dist/css/bootstrap.min.css';   
+
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
-render(
-  <Provider store={store}>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+  <Provider store={store}> 
     <App />
   </Provider>
-  ,
-  document.getElementById('root')
 );
-
+//Component provider cung cấp khả năng truy cập store cho bất kỳ component nào trong nó
 reportWebVitals();
