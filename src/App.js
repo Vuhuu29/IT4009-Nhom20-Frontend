@@ -1,20 +1,39 @@
 // import logo from "./logo.svg";
 import "./App.css";
-import { useSelector, useDispatch } from 'react-redux'
-import {getData} from "./actions"
-import LoginFormComponent from "./components/login/LoginFormComponent";
+//import Rout from "./rout";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import BillScreen from "./screens/BillScreen";
+import CovenantScreen from "./screens/CovenantScreen";
+import FinanceScreen from "./screens/FinanceScreen";
+import HomeScreen from "./screens/HomeScreen";
+import IncidentScreen from "./screens/IncidentScreen";
+import RentingHouseScreen from "./screens/RentingHouseScreen";
+import AccountScreen from "./screens/AccountScreen";
+import LoginRegisterScreen from "./screens/LoginRegisterScreen";
+import RentingRoomScreen from "./screens/RentingRoomScreen";
+import ServiceScreen from "./screens/ServicesScreen";
+import DepositScreen from "./screens/DepositScreen";
+import RenterScreen from "./screens/RenterScreen";
 
 function App() {
-  const data = useSelector((state) => state.dataState) //dùng để lấy state từ store, dataState ở đây được khai báo trong combineReducers
-  const dispatch = useDispatch() //trả về function Dispatch()
   return (
     <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <button onClick={() => dispatch(getData())}>Get data</button>   
-        <div>Hello {data}!</div> */}
-        <LoginFormComponent/>
-      </header>
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeScreen />}/>
+        <Route path="/login" element={<LoginRegisterScreen />}/>
+        <Route path="/bill" element={<BillScreen />}/>
+        <Route path="/covenant" element={<CovenantScreen />}/>
+        <Route path="/finance" element={<FinanceScreen />}/>
+        <Route path="/incident" element={<IncidentScreen />}/>
+        <Route path="/rentinghouse" element={<RentingHouseScreen />}/>
+        <Route path="/account" element={<AccountScreen />}/>
+        <Route path="/rentingroom" element={<RentingRoomScreen />}/>
+        <Route path="/services" element={<ServiceScreen />}/>
+        <Route path="/deposit" element={<DepositScreen />}/>
+        <Route path="/renter" element={<RenterScreen />}/>
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }

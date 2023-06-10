@@ -1,5 +1,22 @@
 .App {
   /* text-align: center; */
+  background-color: #f0f2f5;
+  font-family: "Poppins", Arial, sans-serif;
+  color: black;
+}
+
+.nav-item:hover>.nav-link {
+  color: #B31312;
+}
+
+
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
 }
 
 .App-logo {
