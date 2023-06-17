@@ -14,26 +14,30 @@ import RentingRoomScreen from "./screens/RentingRoomScreen";
 import ServiceScreen from "./screens/ServicesScreen";
 import DepositScreen from "./screens/DepositScreen";
 import RenterScreen from "./screens/RenterScreen";
-
+import ConfigurationScreen from "./screens/ConfigurationScreen";
+import Layout from "./layout/layout";
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomeScreen />}/>
-        <Route path="/login" element={<LoginRegisterScreen />}/>
-        <Route path="/bill" element={<BillScreen />}/>
-        <Route path="/covenant" element={<CovenantScreen />}/>
-        <Route path="/finance" element={<FinanceScreen />}/>
-        <Route path="/incident" element={<IncidentScreen />}/>
-        <Route path="/rentinghouse" element={<RentingHouseScreen />}/>
-        <Route path="/account" element={<AccountScreen />}/>
-        <Route path="/rentingroom" element={<RentingRoomScreen />}/>
-        <Route path="/services" element={<ServiceScreen />}/>
-        <Route path="/deposit" element={<DepositScreen />}/>
-        <Route path="/renter" element={<RenterScreen />}/>
-      </Routes>
-    </BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginRegisterScreen />} />
+          <Route path="/" element={<Layout />} >
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/bill" element={<BillScreen />} />
+            <Route path="/covenant" element={<CovenantScreen />} />
+            <Route path="/finance" element={<FinanceScreen />} />
+            <Route path="/incident" element={<IncidentScreen />} />
+            <Route path="/rentinghouse" element={<RentingHouseScreen />} />
+            <Route path="/account" element={<AccountScreen />} />
+            <Route path="/rentingroom" element={<RentingRoomScreen />} />
+            <Route path="/services" element={<ServiceScreen />} />
+            <Route path="/deposit" element={<DepositScreen />} />
+            <Route path="/renter" element={<RenterScreen />} />
+            <Route path="/configuration" element={<ConfigurationScreen />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

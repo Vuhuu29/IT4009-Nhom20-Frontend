@@ -1,5 +1,9 @@
-export default function LoginRegisterScreen(){
-    return (
-      <div>Hello, this is LoginRegister screen. Hehe 😁</div>
-    )
+import React from 'react';
+
+export default function LoginRegisterScreen() {
+  return (
+    <>
+   
+    </>
+  )
 }
