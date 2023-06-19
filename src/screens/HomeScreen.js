@@ -207,7 +207,10 @@ export default function HomeScreen(){
     )
     
   }
+  if (localStorage.getItem("token") && localStorage.getItem("userRole") == "renter") {
+    window.location = "/client/"
 
+  } else
     return (
       <>
         {localStorage.getItem("token") ? <Logged /> : <NotLogin />}

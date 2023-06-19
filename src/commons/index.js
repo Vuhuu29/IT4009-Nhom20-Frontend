@@ -1,5 +1,5 @@
 //Định nghĩa các hằng
-export const HOST = `http://localhost:5001` //server backend
+export const HOST = `http://localhost:5001/api/v1` //server backend
 export const LOGIN_REQ = "LOGIN_REQ"
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_FAIL = "LOGIN_FAIL"

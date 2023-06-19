@@ -1,5 +1,6 @@
 .App {
   /* text-align: center; */
+  box-sizing: border-box;
   background-color: #f0f2f5;
   font-family: "Poppins", Arial, sans-serif;
   color: black;
