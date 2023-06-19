@@ -1,17 +1,81 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NarBar from "../components/NavBar";
-import {Modal, Button} from 'react-bootstrap';
+import callApi from "../fetchApi/callApiHaveToken";
+import RenterModal from "../components/Modal/RenterModal";
 
 export default function RenterScreen(){
-    const renters = [
-      {
-        'name': 'Raiden Shortgun',
-        'phone': '0123583',
-        'status': 'Đã ngừng thuê', 
-        'room': 'Phòng không người'
+    const [renters, setRenters] = useState([])
+    const [show, setShow] = useState(false)
+    const [form, setForm] = useState({})
+    const [houses, setHouses] = useState([])
+    const [houseName, setHouseName] = useState()
+    const [houseId, setHouseId] = useState()
+    const [fetch, setFetch] = useState(true)
+    const [checked, setChecked] = useState([])
+
+    async function fetchHouse(){
+      try{
+        const d = await callApi('/house', false, 'GET')
+        if (d.status) {
+          setHouses(d.data)
+          if (d.length != 0)
+            setHouseId(d.data[0].id)
+        } else {
+          //xử lý error
+        }
+      }catch(e){
+          console.log(e)
       }
-    ]
-    const [show, setShow] = useState(false);
+    }
+
+    async function fetchRenter(){
+      try{
+        // lấy danh sách người thuê của khu trọ đang chọn
+        const d = await callApi('/renter/house/' + houseId, false, 'GET')
+        if (d.status) {
+          setRenters(d.data)
+        } else {
+          //xử lý error
+        }
+      }catch(e){
+          console.log(e)
+      }
+    }
+
+    useEffect(()=> {
+      fetchHouse()
+    }, [])
+
+    useEffect(()=> {
+      fetchRenter()
+    }, [houseId, fetch])
+
+    const deleteRenter = () => {
+      async function deleteRenter(){
+        try{
+          for (var i in checked) {
+            const d = await callApi('/renter/' + checked[i] , false, 'DELETE')
+            if (d.status) {
+              setFetch(!fetch)
+              setChecked([])
+            } else {
+              //xử lý error
+            }
+          }
+        }catch(e){
+            console.log(e)
+        }
+      }
+      deleteRenter()
+    }
+
+    const editRenter = (data) => {
+      if (houses.filter((item) => item.id == houseId)[0]) 
+        setHouseName(houses.filter((item) => item.id == houseId)[0].name)
+      setForm(data)
+      setShow(true)
+    }
+
     return (
       <>
         <NarBar/>
@@ -21,148 +85,71 @@ export default function RenterScreen(){
                     <div style={{fontSize: 30}}>
                         Quản lý khách thuê
                     </div>
-                    <select class="form-select ms-auto w-25" aria-label=".form-select-lg example">
-                        <option value="1">Khu trọ 1</option>
-                        <option value="2">Khu trọ 2</option>
-                        <option value="3">Khu trọ 3</option>
+                    <select class="form-select ms-auto w-25" value={houseId} 
+                      onChange={(e) => {setHouseId(e.target.value)}}>
+                        {houses && houses.map((data) => (<option value={data.id}>{data.name}</option>))}
                     </select>
                 </div>
 
                 <div className="d-flex flex-row align-items-center mb-2">
-                    <button type="button" class="btn btn-outline-info ms-auto" onClick={() => setShow(true)}>
-                        Thêm mới
-                    </button>
-                    <button type="button" class="btn btn-outline-info ms-2">
-                        Nhập exel
-                    </button>
-                    <button type="button" class="btn btn-outline-info ms-2">
-                        Xuất excel
-                    </button>
-                    <button type="button" class="btn btn-outline-info ms-2">
-                        Tìm kiếm
-                    </button>
-                    <button type="button" class="btn btn-outline-info ms-2">
-                        Xóa nhiều
+                  
+                    <button type="button" class="btn btn-outline-info ms-auto" onClick={deleteRenter}>
+                        Xóa
                     </button>
 
-                    <Modal className="modal-lg" show={show} onHide = {() => setShow(false)}>  
-                    <Modal.Header closeButton>  
-                      <Modal.Title>Thêm mới</Modal.Title>  
-                    </Modal.Header>  
-                    
-                    <Modal.Body>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Khu trọ</div>
-                            <div className="col-4">Dãy nhà trọ không tên</div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Khách thuê</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Số điện thoại</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                            <div className="col-2" style={{fontWeight: 500}}>Email</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Ngày sinh</div>
-                            <div className="col-4">
-                                <input id="startDate" class="form-control" type="date" />
-                            </div>
-                            <div className="col-2" style={{fontWeight: 500}}>Giới tính</div>
-                            <div className="col-4">
-                            <input class="form-check-input" type="radio" name="radio1" id="r11"/>
-                            <label class="form-check-label ms-1" for="r11">
-                              Nam
-                            </label>
-                            <input class="form-check-input ms-3" type="radio" name="radio1" id="r12"/>
-                            <label class="form-check-label ms-1" for="r12">
-                              Nữ
-                            </label>
-                          </div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Số CCCD</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                            <div className="col-2" style={{fontWeight: 500}}>Ngày cấp</div>
-                            <div className="col-4">
-                                <input id="startDate" class="form-control" type="date" />
-                            </div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Nơi cấp</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                            <div className="col-2" style={{fontWeight: 500}}>Hộ khẩu</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Nghề nghiệp</div>
-                            <div className="col-4">
-                            <input class="form-check-input" type="radio" name="radio2" id="r21"/>
-                            <label class="form-check-label ms-1" for="r21">
-                              Sinh viên
-                            </label>
-                            <input class="form-check-input ms-3" type="radio" name="radio2" id="r22"/>
-                            <label class="form-check-label ms-1" for="r22">
-                              Người đi làm
-                            </label>
-                            </div>
-                            <div className="col-2" style={{fontWeight: 500}}>Nơi công tác</div>
-                            <div className="col-4">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                        </div>
-                        <div className="row d-flex align-items-center mb-2">
-                            <div className="col-2" style={{fontWeight: 500}}>Ghi chú</div>
-                            <div className="col-8">
-                                <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                            </div>
-                        </div>
-                    </Modal.Body>  
-                    
-                    <Modal.Footer>  
-                      <Button variant="secondary" onClick = {() => setShow(false)}>Hủy bỏ</Button>  
-                      <Button variant="primary" onClick = {() => setShow(false)}>Lưu lại</Button>  
-                    </Modal.Footer>  
-                  </Modal> 
                 </div>
 
                 <table class="table table-bordered rounded-1">
                   <thead>
                     <tr>
-                      <th><input class="form-check-input" type="checkbox"/></th>
-                      <th scope="col">Tên khách thuê</th>
-                      <th scope="col">Số điện thoại</th>
-                      <th scope="col">Trạng thái</th>
-                      <th scope="col">Phòng</th>
+                      <th>
+                        <input class="form-check-input" type="checkbox" checked={checked.length == renters.length} 
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const all= renters.map((r) => r.id);
+                              setChecked(all);
+                            } else {
+                              setChecked([]);
+                            }
+                          }}
+                        />  
+                      </th>
+                      <th scope="col"> Họ và tên </th>
+                      <th scope="col"> Số điện thoại </th>
+                      <th scope="col"> Giới tính </th>
+                      <th scope="col"> Năm sinh </th>
+                      <th scope="col"> Phòng </th> {/* Có thể trống */}
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {renters.map((data) => (
+                    {renters && renters.map((data) => (
                       <tr>
-                        <td><input class="form-check-input" type="checkbox"/></td>
-                        <td scope="row">{data.name}</td>
-                        <td>{data.phone}</td>
-                        <td>{data.status}</td>
-                        <td>{data.room}</td>
+                        <td>
+                          <input class="form-check-input" type="checkbox" checked={checked.includes(data.id)} 
+                            onChange={(e) =>{
+                              if (e.target.checked) {
+                                setChecked([...checked, data.id]);
+                              } else {
+                                setChecked(checked.filter((item) => item !== data.id));
+                              }
+                            }}/>
+                        </td>
+                        <td> {data.name} </td>
+                        <td> {data.phone} </td>
+                        <td> {data.gender} </td>
+                        <td> {data.birthday} </td>
+                        <td> {data.room} </td>
+                        <td>
+                          <img src="./edit.svg" onClick={() => editRenter(data)}/>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
             </div>
         </div>
+
+        <RenterModal title="Sửa thông tin khách thuê" a="Lưu" show={show} setShow={setShow} form={form} setForm={setForm} fetch={fetch} setFetch={setFetch} houseName={houseName}/>
     </>
 )}

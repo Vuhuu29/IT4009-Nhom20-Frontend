@@ -1,8 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import { useNavigate } from "react-router-dom";
 
 export default function NarBar() {
+    const navigate = useNavigate()
+    const logoutHandle = () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("UserRole")
+        localStorage.removeItem("UserId")
+        navigate('/')
+        window.location.reload(false)
+    }
+    
     return (
-        <div className="container" style={{position: "fixed", left: 0, top: 0, maxWidth: "100%"}}>
+        <div className="container" style={{position: "fixed", left: 0, top: 0, maxWidth: "100%", zIndex: 1}}>
             <nav class="navbar navbar-expand-lg navbar-light px-4 mt-1" style={{boxSizing: 'border-box', backgroundColor: '#fff', borderRadius: 5, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
 
                 <a class="navbar-brand" href="#" style={{fontWeight: 700}}>Team20</a>
@@ -19,14 +29,7 @@ export default function NarBar() {
                             <li><a class="dropdown-item" href="#">Thiết bị</a></li>
                         </ul>
                     </li>
-                    <li className="nav-item dropdown">
-                        <a href="system" className="nav-link dropdown-toggle">Hệ thống</a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="account">Hồ sơ</a></li>
-                            <li><a class="dropdown-item" href="#">Cấu hình chung</a></li>
-                            <li><a class="dropdown-item" href="#">Dịch vụ</a></li>
-                        </ul>
-                    </li>
+                    
                     <li className="nav-item dropdown">
                         <a href="convenant" className="nav-link dropdown-toggle">Hợp đồng</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -42,8 +45,14 @@ export default function NarBar() {
                             <li><a class="dropdown-item" href="#">Xuất phiếu chi</a></li>
                         </ul>
                     </li>
-                    <li className="nav-item dropdown">
+                    <li className="nav-item">
                         <a href="finance" className="nav-link" >Thu chi</a>
+                    </li>
+                    <li className="nav-item">
+                        <a href="account" className="nav-link">Hồ sơ</a>
+                    </li>
+                    <li className="nav-item">
+                        <a href="" className="nav-link" onClick={() => logoutHandle()}>Đăng xuất</a>
                     </li>
                 </ul>
             </nav>

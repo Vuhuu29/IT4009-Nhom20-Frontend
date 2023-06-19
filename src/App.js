@@ -21,7 +21,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomeScreen />}/>
-        <Route path="/login" element={<LoginRegisterScreen />}/>
+        <Route path="/auth" element={<LoginRegisterScreen />}/>
         <Route path="/bill" element={<BillScreen />}/>
         <Route path="/covenant" element={<CovenantScreen />}/>
         <Route path="/finance" element={<FinanceScreen />}/>

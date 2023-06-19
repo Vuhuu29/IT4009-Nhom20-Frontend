@@ -1,66 +1,89 @@
 import NarBar from "../components/NavBar";  
 import RoomView from "../components/RoomView";
+import callApi from "../fetchApi/callApiHaveToken";
+import React, {useEffect, useState } from 'react'
+import Toast from 'react-bootstrap/Toast';
 
 export default function HomeScreen(){
 
-  const room = [
-    {
-      'name': 'P100', 
-      'renter': 'Kazuha',
-      'renter_phone': '0971792508',
-      'num': '3',
-      'max_num': '5',
-      'cost': '800 000 d',
-      'cycle': 'kỳ 1 tháng',
-      'start_time': '08/06/2023',
-      'end_time': '30/08/2023',
-      'state1': 'Đã xuất hóa đơn',
-      'state2': 'Đã thanh toán'
-    },
-    {
-      'name': 'Phòng 12', 
-      'renter': 'Scaramouche',
-      'renter_phone': '01234567',
-      'num': '1',
-      'max_num': '5',
-      'cost': '800 000 d',
-      'cycle': 'kỳ 5 tháng',
-      'start_time': '08/06/2023',
-      'end_time': '30/08/2023',
-      'state1': 'Đã xuất hóa đơn',
-      'state2': 'Đã thanh toán'
-    }, 
-    {
-      'name': 'Phòng 12', 
-      'renter': 'Scaramouche',
-      'renter_phone': '01234567',
-      'num': '1',
-      'max_num': '5',
-      'cost': '800 000 d',
-      'cycle': 'kỳ 5 tháng',
-      'start_time': '08/06/2023',
-      'end_time': '30/08/2023',
-      'state1': 'Đã xuất hóa đơn',
-      'state2': 'Đã thanh toán'
-    }, 
-    {
-      'name': 'Phòng 12', 
-      'renter': 'Scaramouche',
-      'renter_phone': '01234567',
-      'num': '1',
-      'max_num': '5',
-      'cost': '800 000 d',
-      'cycle': 'kỳ 5 tháng',
-      'start_time': '08/06/2023',
-      'end_time': '30/08/2023',
-      'state1': 'Đã xuất hóa đơn',
-      'state2': 'Đã thanh toán'
+  const [rooms, setRooms] = useState([])
+  const [houses, setHouses] = useState([])
+  const [houseId, setHouseId] = useState()
+  const [emptyRoom, setEmptyRoom] = useState(0)
+  const [usingRoom, setUsingRoom] = useState(0)
+  const [depositRoom, setDepositRoom] = useState(0)
+  const [stopRoom, setStopRoom] = useState(0)
+  const [show, setShow] = useState(false)
+  const [noti, setNoti] = useState("Woohoo, you're reading this text in a Toast!")
+
+  useEffect(() => {
+    async function fetchDataHouse(){
+      try{
+        const d = await callApi('/house', false, 'GET')
+        if (d.status) {
+          setHouses(d.data)
+          fetchDataRoom(d.data[0].id)
+        } else {
+          setNoti({
+            header: 'Fail to load data', 
+            msg: d.msg
+          })
+          setShow(true)
+        }
+      }catch(e){
+          console.log(e)
+      }
     }
-  ]
-  
+
+    fetchDataHouse()
+  }, [])
+
+  async function fetchDataRoom(houseId){
+    try{
+      if(houseId) {
+        const d = await callApi('/room/house/' + houseId, false, 'GET')
+        if (d.status) {
+          setRooms(d.data)
+        } else {
+          setNoti({
+            header: 'Fail to load data', 
+            msg: d.msg
+          })
+          setShow(true)
+        }
+      }
+      
+    }catch(e){
+        console.log(e)
+    }
+  }
+
+  useEffect( () => {
+    fetchDataRoom(houseId)
+  } ,[houseId])
 
   const NotLogin = () => {
     return (
+    <>
+    <div className="container" style={{position: "fixed", left: 0, top: 0, maxWidth: "100%"}}>
+            <nav class="navbar navbar-expand-lg navbar-light px-4 mt-1" style={{boxSizing: 'border-box', backgroundColor: '#fff', borderRadius: 5, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
+
+                <a class="navbar-brand" href="#" style={{fontWeight: 700}}>Team20</a>
+                <ul class="navbar-nav ms-auto">
+                    <li className= "nav-item active">
+                        <a href="/" className="nav-link" >Trang chủ</a>
+                    </li>
+                    <li className="nav-item">
+                        <a href="#" className="nav-link" >Giới thiệu</a>
+                    </li>
+                    <li className="nav-item">
+                        <a href="auth" className="nav-link" >Đăng nhập</a>
+                    </li>
+                </ul>
+            </nav>
+        </div >
+
+
       <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', margin: '0px 90px', minHeight: '100vh'}}>
         <div style={{fontSize: '42px', marginBottom: '30px', marginTop: '100px'}}>Bạn đang kinh doanh Nhà trọ, Căn hộ dịch vụ ?</div>
         <div style={{margin: '0 15px 20px 15px', textAlign: 'center', lineHeight: '28px', fontSize: '18px', padding: '15px'}}>
@@ -116,12 +139,14 @@ export default function HomeScreen(){
           </div>
         </div>
       </div>
-    );
-    
+    </>
+    )
   }
 
   const Logged = () => {
     return (
+    <>
+      <NarBar />
       <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
         <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
           <div className="d-flex flex-row">
@@ -131,55 +156,61 @@ export default function HomeScreen(){
                 <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#39B5E0"/>
                 </svg>
-                Phòng trống
+                <div style={{width: 134}}>Phòng trống</div>
+                <div className="mx-1">{emptyRoom}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1 border-end">
                 <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#A31ACB"/>
                 </svg>
-                Phòng đã được thuê
+                <div style={{width: 134}}>Phòng đã được thuê</div>
+                <div className="mx-1">{usingRoom}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1 border-end">
                 <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#FF78F0"/>
                 </svg>
-                Phòng đặt cọc
+                <div style={{width: 134}}>Phòng đặt cọc</div>
+                <div className="mx-1">{depositRoom}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1">
                 <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#F5EA5A"/>
                 </svg>
-                Phòng dừng sử dụng
+                <div style={{width: 134}}>Phòng dừng sử dụng</div>
+                <div className="mx-1">{stopRoom}</div>
               </div>
 
             </div>
 
-            <select class="form-select w-25" aria-label=".form-select-lg example">
-              {/* <option selected>Open this select menu</option> */}
-              <option value="1">Khu trọ 1</option>
-              <option value="2">Khu trọ 2</option>
-              <option value="3">Khu trọ 3</option>
+            <select class="form-select w-25" aria-label=".form-select-lg example" value={houseId} onChange={(e) => {setHouseId(e.target.value)}}>
+              {houses && houses.map((data) => (<option value={data.id} >{data.name}</option>))}
             </select>
 
           </div>
-          <div style={{display: 'grid', gridTemplateColumns: 'auto auto auto'}}>
-            {room.map((data) => (<RoomView room = {data}/>))}
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+            {rooms && rooms.map((data) => (<RoomView room = {data}/>))}
           </div> 
           
           
         </div>
       </div>
+      <Toast show={show} onClose={() => {setShow(!show)}} style={{position: 'fixed', top: 8, right: 8, zIndex: 2, backgroundColor: '#d9edf7'}}>
+        <Toast.Header><b className="me-auto">{(noti.header) ? noti.header : 'Thông báo'}</b></Toast.Header>
+        { (noti.msg) ?  <Toast.Body>{noti.msg}</Toast.Body> : <></>}
+      </Toast>
+    </>
+      
     )
     
   }
 
     return (
       <>
-        <NarBar />
-        <Logged />
+        {localStorage.getItem("token") ? <Logged /> : <NotLogin />}
       </>
       
       

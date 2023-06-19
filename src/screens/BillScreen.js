@@ -1,41 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NarBar from "../components/NavBar";
 import {Modal, Button} from 'react-bootstrap';
 
 export default function BillScreen(){
-    const bills = [
-      {
-        'time': '06/2023',
-        'room': '007',
-        'renter': 'Helmut Huxley', 
-        'type': 'Hàng tháng',
-        'cost': '1200000',
-        'pay': '2000000',
-        'debt': '800000',
-        'pay_time': '01/06/2023',
-        'is_pay': true
-      }
-    ]
-    const services = [
-      {
-        'name': 'Tiền nhà',
-        'cost': '3200000',
-        'unit': 'Phòng',
-        'num': '1', 
-        'pre_pay': '3200000',
-        'sum': '0'
-      }, 
-      {
-        'name': 'Tiền điện',
-        'cost': '4000',
-        'unit': 'Số kWh',
-        'num': '32', 
-        'pre_pay': '0',
-        'sum': '128000'
-      }
-    ]
-    const [show, setShow] = useState(false);
-    return (
+  const [bills, setBills] = useState([]) 
+  const [show, setShow] = useState(false);
+  const [checked1, setChecked1] = useState([])
+  const [checked2, setChecked2] = useState([])
+  const [services, setServices] = useState([])
+
+  useEffect(() => {
+    // async function fetchDataBills(){
+    //   try{
+    //     const res = await fetch('http://localhost:3000/bill')
+    //     const data = await res.json().data
+    //     setBills(data)
+    //   }catch(e){
+    //       console.log(e)
+    //   }
+    // }
+    // fetchDataBills()
+  }, [])
+
+  return (
       <>
         <NarBar/>
         <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
@@ -100,7 +87,15 @@ export default function BillScreen(){
                 <table class="table table-bordered rounded-1">
                   <thead>
                     <tr>
-                      <th><input class="form-check-input" type="checkbox"/></th>
+                      <th><input class="form-check-input" type="checkbox" checked={checked1.length === bills.length} 
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          const allBills = bills.map((b) => b.name);
+                          setChecked1(allBills);
+                        } else {
+                          setChecked1([]);
+                        }
+                      }}/></th>
                       <th scope="col">Sửa</th>
                       <th scope="col">Tháng / năm</th>
                       <th scope="col">Phòng</th>
@@ -116,16 +111,15 @@ export default function BillScreen(){
                   <tbody>
                     {bills.map((data) => (
                       <tr>
-                        <td><input class="form-check-input" type="checkbox"/></td>
-                        <td>
-                          <button onClick = {() => setShow(true)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                            </svg>
-                          </button>
-                        
-                        </td>
+                        <td><input class="form-check-input" type="checkbox" checked={checked1.includes(data.name)} 
+                        onChange={(e) =>{
+                          if (e.target.checked) {
+                            setChecked1([...checked1, data.name]);
+                          } else {
+                            setChecked1(checked1.filter((item) => item !== data.name));
+                          }
+                        }}/></td>
+                        <td><img src="./edit.svg" onClick = {() => setShow(true)}/></td>
                         <td scope="row">{data.time}</td>
                         <td>{data.room}</td>
                         <td>{data.renter}</td>

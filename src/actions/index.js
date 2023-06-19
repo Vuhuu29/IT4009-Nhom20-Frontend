@@ -4,9 +4,15 @@
 //Các hành động được gửi bằng phương thức store.
 import * as types from '../commons/index'
 
-export function getData(payload){
-    return({
-        type:types.GETDATA_REQ,
-        payload: payload
+export function login(payload) {
+    return ({
+        type: types.LOGIN_REQ,
+        payload
+    })
+};
+export function register(payload) {
+    return ({
+        type: types.REGISTER_REQ,
+        payload
     })
 };

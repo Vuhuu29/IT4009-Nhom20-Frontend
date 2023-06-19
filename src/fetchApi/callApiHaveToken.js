@@ -1,12 +1,12 @@
 import * as constants from '../commons/index';
 export default async function callApi(path, data, method) {
     let objFetch = {
-        method,
+        method: method,
         headers: {
-            "Content-type": "application/json"
+            "Content-Type": "application/json",
+            "authorization": 'Bearer ' + localStorage.getItem("token")
         }
     }
-
     if (data) {
         objFetch = { ...objFetch, body: JSON.stringify(data) }
     }
@@ -14,15 +14,18 @@ export default async function callApi(path, data, method) {
     try{
         const res = await fetch(constants.HOST + path, objFetch)
         const data = await res.json()
-        if ((!data.status) && data.msg === 'TokenExpiredError'){
+        if (data.msg === 'TokenExpiredError'){
             localStorage.removeItem("token")
             localStorage.removeItem("UserRole")
             localStorage.removeItem("UserId")
             if(!alert('Phiên đăng nhập hết hạn. Đăng nhập lại')) window.location = '/auth'
             return
         }
+            
         return data
     }catch(e){
         console.log(e)
     }
 }
+
+
