@@ -47,6 +47,13 @@
   color: #61dafb;
 }
 
+.custom-toast {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

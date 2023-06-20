@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import ServiceModal from "../components/Modal/ServiceModal";
 import callApi from "../fetchApi/callApiHaveToken";
 
-export default function ServiceScreen(){
+export default function ServiceScreen(props){
   const [services, setServices] = useState([])
   const [checked1, setChecked1] = useState([])
   const [show1, setShow1] = useState(false)

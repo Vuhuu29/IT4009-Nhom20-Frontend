@@ -4,7 +4,7 @@ import '../style/css/form.css';
 import callApi from "../fetchApi/callApiHaveToken";
 import RentingRoomModal from "../components/Modal/RentingRoomModal";
 
-export default function RentingRoomScreen(){
+export default function RentingRoomScreen(props){
   const [houses, setHouses] = useState([])
   const [houseId, setHouseId] = useState()
   const [rooms, setRooms] = useState([])

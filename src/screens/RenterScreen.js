@@ -3,7 +3,7 @@ import NarBar from "../components/NavBar";
 import callApi from "../fetchApi/callApiHaveToken";
 import RenterModal from "../components/Modal/RenterModal";
 
-export default function RenterScreen(){
+export default function RenterScreen(props){
     const [renters, setRenters] = useState([])
     const [show, setShow] = useState(false)
     const [form, setForm] = useState({})

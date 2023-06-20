@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import NarBar from "../components/NavBar";
 import {Modal, Button} from 'react-bootstrap';
 
-export default function BillScreen(){
+export default function BillScreen(props){
   const [bills, setBills] = useState([]) 
   const [show, setShow] = useState(false);
   const [checked1, setChecked1] = useState([])

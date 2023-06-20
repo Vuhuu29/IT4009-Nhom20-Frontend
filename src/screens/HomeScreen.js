@@ -4,7 +4,7 @@ import callApi from "../fetchApi/callApiHaveToken";
 import React, {useEffect, useState } from 'react'
 import Toast from 'react-bootstrap/Toast';
 
-export default function HomeScreen(){
+export default function HomeScreen(props){
 
   const [rooms, setRooms] = useState([])
   const [houses, setHouses] = useState([])
@@ -66,22 +66,23 @@ export default function HomeScreen(){
     return (
     <>
     <div className="container" style={{position: "fixed", left: 0, top: 0, maxWidth: "100%"}}>
-            <nav class="navbar navbar-expand-lg navbar-light px-4 mt-1" style={{boxSizing: 'border-box', backgroundColor: '#fff', borderRadius: 5, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
+      <nav class="navbar navbar-expand-lg navbar-light px-4 mt-1" style={{boxSizing: 'border-box', backgroundColor: '#fff', borderRadius: 5, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
 
-                <a class="navbar-brand" href="#" style={{fontWeight: 700}}>Team20</a>
-                <ul class="navbar-nav ms-auto">
-                    <li className= "nav-item active">
-                        <a href="/" className="nav-link" >Trang chủ</a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="#" className="nav-link" >Giới thiệu</a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="auth" className="nav-link" >Đăng nhập</a>
-                    </li>
-                </ul>
-            </nav>
-        </div >
+        <a class="navbar-brand" href="#" style={{fontWeight: 700}}>Team20</a>
+        <ul class="navbar-nav ">
+            <li className= "nav-item active">
+                <a href="/" className="nav-link" >Trang chủ</a>
+            </li>
+            <li className="nav-item">
+                <a href="#" className="nav-link" >Giới thiệu</a>
+            </li>
+            <li className="nav-item">
+                <a href="auth" className="nav-link" >Đăng nhập</a>
+            </li>
+        </ul>
+
+      </nav>
+    </div >
 
 
       <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', margin: '0px 90px', minHeight: '100vh'}}>

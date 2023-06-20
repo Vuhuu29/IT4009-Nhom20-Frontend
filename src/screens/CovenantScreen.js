@@ -4,7 +4,7 @@ import CreateCovenantModal from "../components/Modal/ConvenantModal";
 import UpdateCovenantModal from "../components/Modal/UpdateCovenantModal";
 import callApi from "../fetchApi/callApiHaveToken";
 
-export default function CovenantScreen(){
+export default function CovenantScreen(props){
     const [covenants, setCovenants] = useState([])
     const [show1, setShow1] = useState(false)
     const [show2, setShow2] = useState(false)
