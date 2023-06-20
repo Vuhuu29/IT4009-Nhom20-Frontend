@@ -2,7 +2,7 @@ import { useState } from "react";
 import NarBar from "../components/NavBar";
 import {Modal, Button} from 'react-bootstrap';
 
-export default function DepositScreen(){
+export default function DepositScreen(props){
     const deposits = [
       {
         'room': 'Phòng không người',

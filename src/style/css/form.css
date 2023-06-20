@@ -83,16 +83,6 @@ p {
     box-shadow: 0px 5px 20px -17px rgba(0, 0, 0, 0.34);
 }
 
-
-
-.custom-toast {
-    position: fixed;
-    top: 8px;
-    right: 8px;
-    z-index: 2px;
-    background-color: #d9edf7
-}
-
 .hidden { display:none; }
 
 .EMPTY_ROOM{border-color: #39B5E0;} 

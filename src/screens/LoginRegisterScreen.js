@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LoginFormComponent from "../components/LoginForm";
 import RegisterFormComponent from "../components/RegisterForm";
 
-export default function LoginRegisterScreen(){
+export default function LoginRegisterScreen(props){
   const [checkLogin, setCheckLogin] = useState(true)
   return (
     <>

@@ -4,7 +4,7 @@ import callApi from "../fetchApi/callApiHaveToken";
 import Toast from 'react-bootstrap/Toast';
 import { Navigate } from 'react-router';
 
-export default function AccountScreen(){
+export default function AccountScreen(props){
   const defaulUser = {
     "phone": "",
     "password": "",
@@ -18,8 +18,6 @@ export default function AccountScreen(){
   const [user, setUser] = useState(defaulUser)
   const [form, setForm] = useState(defaulUser)
   const [form1, setForm1] = useState()
-  const [show, setShow] = useState(false)
-  const [noti, setNoti] = useState("Woohoo, you're reading this text in a Toast!")
 
   useEffect(() => {
     async function fetchDataUser(){
@@ -29,11 +27,11 @@ export default function AccountScreen(){
           setUser(data.data)
           setForm(data.data)
         } else {
-          setNoti({
+          props.setNoti({
             header: 'Fail to load data', 
             msg: data.msg
           })
-          setShow(true)
+          props.setShow(true)
         }
       }catch(e){
           console.log(e)
@@ -47,11 +45,11 @@ export default function AccountScreen(){
       try{
         const data = await callApi('/user/' + localStorage.getItem('userId'), form, 'PUT')
         if (data.status) 
-          {setNoti({msg: 'Update Success'}) 
+          {props.setNoti({msg: 'Update Success'}) 
           setUser(form)}
         else 
-          setNoti({msg: 'Fail to update data'})
-        setShow(true)
+          props.setNoti({msg: 'Fail to update data'})
+        props.setShow(true)
 
       }catch(e){
           console.log(e)
@@ -77,8 +75,8 @@ export default function AccountScreen(){
       // }
     }
     if(form1.newPassword !== form1.newRePassword) {
-      setNoti({msg: 'Mật khẩu mới nhập lại không trùng'})
-      setShow(true)
+      props.setNoti({msg: 'Mật khẩu mới nhập lại không trùng'})
+      props.setShow(true)
     }
     else 
       updatePassword()
@@ -126,8 +124,7 @@ export default function AccountScreen(){
               </ul>
 
               <div class="tab-content">
-
-                {/* Tab sửa thông tin cá nhân */}
+      
                 <div class={"tab-pane fade " + (active === "button1" ? "show active" : "")}>
                   <div className="row d-flex align-items-center">
 
@@ -236,44 +233,38 @@ export default function AccountScreen(){
 
                 </div>
 
-                {/* Tab đôi mật khẩu */}
                 <div class={"tab-pane fade " + (active === "button2" ? "show active" : "")}>
 
                   <div className="row d-flex align-items-center">
-
-                    <div className="col-3"> Mật khẩu cũ </div>
+                    <div className="col-3">Mật khẩu cũ</div>
                     <div className="col-9">
                       <input type="text" class="form-control text-input"
-                        onChange={(e) => {
-                          setForm1({
-                              ...form1,
-                              oldPassword: e.target.value
-                          })
-                        }}
+                      onChange={(e) => {
+                        setForm1({
+                            ...form1,
+                            oldPassword: e.target.value
+                        })
+                      }}
                       />
                     </div>
-
                   </div>
 
                   <div className="row d-flex align-items-center">
-
-                    <div className="col-3"> Mật khẩu mới </div>
+                    <div className="col-3">Mật khẩu mới</div>
                     <div className="col-9">
                       <input type="text" class="form-control text-input" 
-                        onChange={(e) => {
-                          setForm1({
-                              ...form1,
-                              newPassword: e.target.value
-                          })
-                        }}
+                      onChange={(e) => {
+                        setForm1({
+                            ...form1,
+                            newPassword: e.target.value
+                        })
+                      }}
                       />
                     </div>
-
                   </div>
 
                   <div className="row d-flex align-items-center mb-2">
-
-                    <div className="col-3"> Nhập lại mật khẩu mới </div>
+                    <div className="col-3">Nhập lại mật khẩu mới</div>
                     <div className="col-9">
                       <input type="text" class="form-control text-input"
                       onChange={(e) => {
@@ -287,28 +278,14 @@ export default function AccountScreen(){
                   </div>
 
                   <div className="d-flex justify-content-center mb-2">
-                    <button type="button" class="btn btn-outline-info" onClick={updatePassword}>
-                      Cập nhật
-                    </button>
+                    <button type="button" class="btn btn-outline-info" onClick={updatePassword}>Cập nhật</button>
                   </div>
-
                 </div>
               </div>
-            </div>
+              </div>
           </div>
         </div>
       </div>
-
-      <Toast show={show} onClose={() => setShow(!show)} className="custom-toast">
-        <Toast.Header>
-          <b className="me-auto">
-            {(noti.header) ? noti.header : 'Thông báo'}
-          </b>
-        </Toast.Header>
-
-        { (noti.msg) ?  <Toast.Body> {noti.msg} </Toast.Body> : <></>}
-
-      </Toast>
       </>
     )
   }

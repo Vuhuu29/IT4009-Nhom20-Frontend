@@ -4,7 +4,7 @@ import React, {useEffect, useState } from 'react'
 import callApi from "../fetchApi/callApiHaveToken"
 import {Modal, Button} from 'react-bootstrap';
 
-export default function RentingHouseScreen(){
+export default function RentingHouseScreen(props){
   const [houses, setHouses] = useState([])
   const [checked1, setChecked1] = useState([])
   const [show1, setShow1] = useState(false)
