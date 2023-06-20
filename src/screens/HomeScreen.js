@@ -69,7 +69,7 @@ export default function HomeScreen(props){
       <nav class="navbar navbar-expand-lg navbar-light px-4 mt-1" style={{boxSizing: 'border-box', backgroundColor: '#fff', borderRadius: 5, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
 
         <a class="navbar-brand" href="#" style={{fontWeight: 700}}>Team20</a>
-        <ul class="navbar-nav ">
+        <ul class="navbar-nav ms-auto">
             <li className= "nav-item active">
                 <a href="/" className="nav-link" >Trang chủ</a>
             </li>

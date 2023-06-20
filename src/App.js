@@ -33,35 +33,10 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/auth" element={<LoginRegisterScreen />} />
-          <Route path="/bill" element={<BillScreen />} />
-          <Route path="/covenant" element={<CovenantScreen />} />
-          <Route path="/finance" element={<FinanceScreen />} />
-          <Route path="/incident" element={<IncidentScreen />} />
-          <Route path="/rentinghouse" element={<RentingHouseScreen />} />
-          <Route path="/account" element={<AccountScreen />} />
-          <Route path="/rentingroom" element={<RentingRoomScreen />} />
-          <Route path="/services" element={<ServiceScreen />} />
-          <Route path="/deposit" element={<DepositScreen />} />
-          <Route path="/renter" element={<RenterScreen />} />
-          <Route path="/client/" element={<LayoutRenter />}>
-            <Route path="/client/" element={<DashbroadRenter />} />
-            <Route path="/client/room" element={<Myhouse />} />
-            <Route path="/client/bill/" element={<MyBill />} />
-          </Route>
-          <Route path="*" element={<NotFoundScreen />} />
-
-
-        </Routes>
-      </BrowserRouter>
       {(localStorage.getItem('token')) ? 
         <BrowserRouter>
           <Routes>
             <Route path="/" exact element={<HomeScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/auth" element={<LoginRegisterScreen setShow={setShow} setNoti={addNoti}/>}/>
             <Route path="/bill" element={<BillScreen setShow={setShow} setNoti={addNoti}/>}/>
             <Route path="/covenant" element={<CovenantScreen setShow={setShow} setNoti={addNoti}/>}/>
             <Route path="/finance" element={<FinanceScreen setShow={setShow} setNoti={addNoti}/>}/>
@@ -72,6 +47,12 @@ function App() {
             <Route path="/services" element={<ServiceScreen setShow={setShow} setNoti={addNoti}/>}/>
             <Route path="/deposit" element={<DepositScreen setShow={setShow} setNoti={addNoti}/>}/>
             <Route path="/renter" element={<RenterScreen setShow={setShow} setNoti={addNoti}/>}/>
+            <Route path="/client/" element={<LayoutRenter />}>
+              <Route path="/client/" element={<DashbroadRenter />} />
+              <Route path="/client/room" element={<Myhouse />} />
+              <Route path="/client/bill/" element={<MyBill />} />
+            </Route>
+          <Route path="*" element={<NotFoundScreen />} />
           </Routes>
         </BrowserRouter>
         : 
@@ -85,45 +66,7 @@ function App() {
               <LoginRegisterScreen setShow={setShow} setNoti={addNoti}/>
             }/>
 
-            <Route path="/bill" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/covenant" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/finance" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/incident" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/rentinghouse" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/account" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/rentingroom" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/services" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/deposit" element={
-              <Navigate to="/auth" />
-            }/>
-
-            <Route path="/renter" element={
-              <Navigate to="/auth" />
-            }/>
+            <Route path="*" element={<NotFoundScreen />} />
 
           </Routes>
         </BrowserRouter>}
