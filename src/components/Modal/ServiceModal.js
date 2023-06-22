@@ -8,6 +8,7 @@ export default function ServiceModal(props) {
             const d = await callApi('/service', props.form, 'POST')
             if (d.status) {
               props.setFetch(!props.fetch)
+              props.setForm({})
             } else {
               //xử lý error
             }
@@ -40,11 +41,11 @@ export default function ServiceModal(props) {
             <Modal.Title>Chỉnh sửa</Modal.Title>  
             </Modal.Header>  
             
-            <Modal.Body>  
+            <Modal.Body className='px-5'>  
                 <div className="row mb-2">
                 </div>
                 <div className="row mb-2">
-                    <div className="col-3">
+                    <div className="col-3 pl-4  align-self-center">
                         Tên dịch vụ
                     </div>
                     <div className="col-9">
@@ -59,7 +60,8 @@ export default function ServiceModal(props) {
                     </div>
                 </div>
                 <div className="row mb-2">
-                    <div className="col-3">
+                  {/* căn chữ giữa trên dưới */}
+                    <div className="col-3 pl-4 align-self-center">
                         Mô tả
                     </div>
                     <div className="col-9">
@@ -74,8 +76,8 @@ export default function ServiceModal(props) {
                     </div>
                 </div>
                 <div className="row mb-2">
-                    <div className="col-3">
-                        Đơn giá
+                    <div className="col-3 pl-4  align-self-center">
+                        Đơn giá:
                     </div>
                     <div className="col-5">
                         <input type="text" class="form-control text-input" required
@@ -87,8 +89,8 @@ export default function ServiceModal(props) {
                           })
                         }}/>
                     </div>
-                    <div className="col-2">
-                        Đơn vị
+                    <div className="col-2 align-self-center">
+                        Đơn vị:
                     </div>
                     <div className="col-2">
                         <input type="text" class="form-control text-input" 

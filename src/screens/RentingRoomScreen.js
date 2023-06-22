@@ -75,7 +75,7 @@ export default function RentingRoomScreen(props){
           const d = await callApi('/room/' + checked[i] , false, 'DELETE')
           if (d.status) {
             setFetch(!fetch)
-            setChecked([])
+            setChecked([])  
           } else {
             //xử lý error
           }

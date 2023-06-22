@@ -3,13 +3,29 @@ import React, {useEffect, useState } from 'react'
 import callApi from '../../fetchApi/callApiHaveToken'
 
 export default function RentingRoomModal(props) {
+    const [houseServices, setHouseServices] = useState([])
     const [roomServices, setRoomServices] = useState([])
+    const [initroomServices, setInitRoomServices] = useState([])
+
+    async function fetchAllService(){
+        try{
+            const d = await callApi('/service/house/'+ props.houseId , false, 'GET')
+            if (d.status) {
+                setHouseServices(d.data)
+            } else {
+                //xử lý error
+            }
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     async function fetchRoomService(){
         try{
           const d = await callApi('/service/room/' + props.form.id, false, 'GET')
           if (d.status) {
             setRoomServices(d.data)
+            setInitRoomServices(d.data)
           } else {
             //xử lý error
           }
@@ -18,9 +34,12 @@ export default function RentingRoomModal(props) {
         }
       }
 
-    async function addRoomService(){
+    async function addRoomService(roomId, services){
         try{
-            const d = await callApi('/service/room/' + props.form.id, {id_services: roomServices}, 'POST')
+            let body = {
+                id_services: services.map((service) => service.id)
+            }
+            const d = await callApi('/service/room/' + roomId, body, 'POST')
             if (d.status) {
               //Xử lý lỗi
             } else {
@@ -45,17 +64,28 @@ export default function RentingRoomModal(props) {
     }
 
     useEffect(() => {
-        if(props.a == 'Lưu') {
+        // if(props.a == 'Lưu') {
             fetchRoomService()
-        } 
-    }, [])
+            // }
+            console.log("room", roomServices)
+    }, [props.form.id])
+
+    useEffect(() => {
+        fetchAllService()
+        console.log("house",houseServices)
+    }, [props.houseId]);
 
     const createRoom = () => {
         async function createRoom(){
           try{
             const d = await callApi('/room', props.form, 'POST')
             if (d.status) {
-              props.setFetch()
+                console.log(d.data)
+              let roomId = d.data.id;
+              if (roomServices.length != 0) await addRoomService(roomId, roomServices)
+              props.setForm({})
+              props.setFetch(!props.fetch)
+              
             } else {
               //xử lý error
             }
@@ -64,7 +94,6 @@ export default function RentingRoomModal(props) {
           }
         }
         createRoom()
-        if (roomServices.length != 0) addRoomService()
       }
   
     const updateRoom = () => {
@@ -75,13 +104,30 @@ export default function RentingRoomModal(props) {
                 props.setFetch(!props.fetch)
             } else {
                 //xử lý error
+                // if initroomServices và roo not null vaf khác với
+                if(initroomServices.length !==0){
+                    if(roomServices.length !==0)
+                        addRoomService(props.form.id, roomServices)
+                }else{
+                    let serviceDelete = initroomServices.filter(
+                        (service) => !roomServices.some((item) => item.id === service.id)
+                        );
+                        let serviceAdd = roomServices.filter(
+                          (service) => !initroomServices.some((item) => item.id === service.id)
+                        );
+                        for (let i = 0; i < serviceDelete.length; i++) {
+                          const deletedService = serviceDelete[i];
+                          deleteRoomService(props.form.id, deletedService.id);
+                        }
+                        addRoomService(props.form.id, serviceAdd);
+
+                }
             }
             }catch(e){
                 console.log(e)
             }
         }
         updateHouse()
-        if (roomServices.length != 0) {deleteRoomService(); addRoomService()}
     }
     return (
         <Modal className="modal-lg" show={props.show} onHide = {() => props.setShow(false)}>  
@@ -154,21 +200,23 @@ export default function RentingRoomModal(props) {
                       Danh sách dịch vụ
                     </div>
                     <div className="col-9" style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
-                        {props.services && props.services.map((data) => (
-                            <div>
-                                <input class="form-check-input me-2 mb-1" type="checkbox" 
-                                checked={roomServices.includes(data.id)}
+                        {houseServices && houseServices.map((data, index) =>{ 
+                              const isChecked = roomServices.some((service) => service.id === data.id);
+                            return(
+                            <div key={index}>
+                                <input className="form-check-input me-2 mb-1" type="checkbox" 
+                                checked= {isChecked}
                                 onChange={(e) =>{
                                     if (e.target.checked) {
-                                        setRoomServices([...roomServices, data.id]);
+                                        setRoomServices([...roomServices, data]);
                                     } else {
-                                        setRoomServices(roomServices.filter((item) => item !== data.id));
+                                        setRoomServices(roomServices.filter((item) => item.id !== data.id));
                                     }
                                   }}
                                 />
-                                {data.name}
+                               {data.name} 
                             </div>
-                        ))}
+                        )})}
                     </div>
                 </div>
             </Modal.Body>  
