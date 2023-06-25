@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js'
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -24,7 +23,7 @@ export default function NarBarRenter() {
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item active">
-                            <Link to="" className="nav-link">Trang chủ</Link>
+                            <Link to="/" className="nav-link">Trang chủ</Link>
                         </li>
                         <li className="nav-item">
                             <Link to="room" className="nav-link">Phòng trọ</Link>

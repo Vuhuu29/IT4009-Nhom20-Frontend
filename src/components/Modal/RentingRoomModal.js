@@ -134,7 +134,7 @@ export default function RentingRoomModal(props) {
                                     }
                                   }}
                                 />
-                                {data.name}
+                               {data.name} 
                             </div>
                         ))}
                     </div>

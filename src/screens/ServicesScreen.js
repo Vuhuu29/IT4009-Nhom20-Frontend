@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'; 
 import ServiceModal from "../components/Modal/ServiceModal";
 import callApi from "../fetchApi/callApiHaveToken";
+import AddServiceIntoRoomModal from "../components/Modal/AddServiceIntoRoomModal";
 
-export default function ServiceScreen(props){
+export default function ServiceScreen(props) {
   const [services, setServices] = useState([])
   const [checked, setChecked] = useState([])
   const [show1, setShow1] = useState(false)
@@ -33,6 +34,7 @@ export default function ServiceScreen(props){
         props.toastNoti(d.msg)
     }
   }
+
 
   useEffect(() => {
     fetchHouse()
@@ -75,7 +77,7 @@ export default function ServiceScreen(props){
       <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
         <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
           <div className="d-flex flex-row align-items-center mb-2 border-bottom">
-            <div style={{fontSize: 30}}>
+            <div style={{ fontSize: 30 }}>
               Quản lý dịch vụ
             </div>
 
@@ -92,7 +94,7 @@ export default function ServiceScreen(props){
                 Xóa 
               </button>
           </div>
-          
+
           <table class="table table-bordered rounded-1">
             <thead>
               <tr>
@@ -105,7 +107,7 @@ export default function ServiceScreen(props){
                       } else {
                         setChecked([]);
                       }
-                    }}/>
+                    }} />
                 </th>
                 <th scope="col"> Tên dịch vụ </th>
                 <th scope="col"> Đơn giá </th>
@@ -116,8 +118,8 @@ export default function ServiceScreen(props){
             </thead>
 
             <tbody>
-              {services.map((data) => (
-                <tr>
+              {services.map((data, index) => (
+                <tr key={index}>
                   <td>
                     <input class="form-check-input" type="checkbox" checked={checked.includes(data.id)} 
                       onChange={(e) =>{
@@ -126,7 +128,7 @@ export default function ServiceScreen(props){
                         } else {
                           setChecked(checked.filter((item) => item !== data.id));
                         }
-                      }}/>
+                      }} />
                   </td>
                   <td> {data.name} </td>
                   <td> {data.cost} </td>
@@ -141,8 +143,9 @@ export default function ServiceScreen(props){
           </table>
         </div>
       </div>
-      <ServiceModal show={show1} setShow={setShow1} fetch={fetch} setFetch={setFetch} title = "Thêm mới" form = {form1} setForm = {setForm1} a = "Thêm" />
-      <ServiceModal show={show2} setShow={setShow2} fetch={fetch} setFetch={setFetch} title = "Sửa" form = {form2} setForm = {setForm2} a = "Lưu"/>
+      {show1 ? <ServiceModal show={show1} setShow={setShow1} fetch={fetch} setFetch={setFetch} title="Thêm mới" form={{...form1, house_id: houseId}} setForm={setForm1} a="Thêm" /> : null}
+      {show2 ? <ServiceModal show={show2} setShow={setShow2} fetch={fetch} setFetch={setFetch} title="Sửa" form={form2} setForm={setForm2} a="Lưu" /> : null}
+      {showAddServiceIntoRoom ? <AddServiceIntoRoomModal show={showAddServiceIntoRoom} setShow={setShowAddServiceIntoRoom} service={form2} /> : null}
     </>
   )
 }
