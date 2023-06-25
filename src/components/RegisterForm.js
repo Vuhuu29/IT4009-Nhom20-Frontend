@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from "react-router-dom";
 import *as actions from '../actions/index'
 
 export default function RegisterForm(props) {
   const [form, setForm] = useState({})
   const [isAlert, setIsAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState()
-  const navigate = useNavigate()
   const userState = useSelector((state) => state.userState)
   const dispatch = useDispatch()
 
@@ -19,7 +17,7 @@ export default function RegisterForm(props) {
           await localStorage.setItem("token", userState.data.token)
           await localStorage.setItem("userId", userState.data.newOwner.id)
           await localStorage.setItem("userRole", userState.data.newOwner.role)
-          navigate("/")
+          window.location.href = "/";
         }else {
           if (userState.msg == "Server Error") 
             setAlertMsg("Lỗi đăng ký")
@@ -51,7 +49,7 @@ export default function RegisterForm(props) {
 
               <form action="#" class="signin-form">
                 <div class="form-group mb-3">
-                  <label class="label" for="name">Họ và tên</label>
+                  <label class="label" htmlFor="name"> Họ và tên * </label>
                   <input type="text" class="form-control" id="name" required placeholder="Họ và tên" 
                   onChange={(e) => {
                       setForm({
@@ -61,18 +59,18 @@ export default function RegisterForm(props) {
                   }}/>
                 </div>
                 <div class="form-group mb-3">
-                  <label class="label" for="birthday">Ngày sinh</label>
+                  <label class="label" htmlFor="birthday"> Ngày sinh </label>
 				          <input id="birthday" class="form-control" type="date" 
                   onChange={(e) => {
                     setForm({
                         ...form,
-                        birtday: e.target.value
+                        birthday: e.target.value
                     })
                   }}/>
                 </div>
 
                 <div class="form-group mb-3">
-                  <label class="label" for="phone">Số điện thoại</label>
+                  <label class="label" htmlFor="phone"> Số điện thoại * </label>
                   <input type="text" id='phone' class="form-control" required placeholder="Số điện thoại"
                   onChange={(e) => {
                     setForm({
@@ -82,7 +80,7 @@ export default function RegisterForm(props) {
                   }}/>
                 </div>
                 <div class="form-group mb-3">
-                  <label class="label" for="email">Email</label>
+                  <label class="label" htmlFor="email"> Email </label>
                   <input type="email" id='email' class="form-control" placeholder="Email"
                   onChange={(e) => {
                     setForm({
@@ -92,7 +90,7 @@ export default function RegisterForm(props) {
                   }}/>
                 </div>
                 <div class="form-group mb-3">
-                  <label class="label" for="password">Mật khẩu</label>
+                  <label class="label" htmlFor="password"> Mật khẩu * </label>
                   <input type="password" id="password" class="form-control" required placeholder="Mật khẩu"
                   onChange={(e) => {
                     setForm({
@@ -102,7 +100,7 @@ export default function RegisterForm(props) {
                   }}/>
                 </div>
                 <div class="form-group mb-3">
-                  <label class="label" for="repassword">Nhập lại mật khẩu</label>
+                  <label class="label" htmlFor="repassword"> Nhập lại mật khẩu * </label>
                   <input type="password" id="repassword" class="form-control" required placeholder="Nhập lại mật khẩu"
                   onChange={(e) => {
                     setForm({
@@ -115,7 +113,7 @@ export default function RegisterForm(props) {
                   <button type='button' class="form-control btn btn-primary rounded px-3" 
                   onClick={() => { 
                     if(form.password != form.rePassword) {
-                      setAlertMsg("Mật khẩu nhập lại không trùng")
+                      setAlertMsg("RePassword not match")
                       setIsAlert(true)
                     }else {
                       setIsAlert(false)

@@ -2,7 +2,6 @@ import NarBar from "../components/NavBar"
 import RentingHouseModal from "../components/Modal/RentingHouseModal"
 import React, {useEffect, useState } from 'react'
 import callApi from "../fetchApi/callApiHaveToken"
-import {Modal, Button} from 'react-bootstrap';
 
 export default function RentingHouseScreen(props){
   const [houses, setHouses] = useState([])
@@ -14,16 +13,10 @@ export default function RentingHouseScreen(props){
   const [fetch, setFetch] = useState(true)
 
   async function fetchHouses(){
-    try{
-      const d = await callApi('/house', false, 'GET')
-      if (d.status) {
+    const d = await callApi('/house/owner/' + localStorage.getItem('userId') , false, 'GET')
+      if (d.status) 
         setHouses(d.data)
-      } else {
-        //xử lý error
-      }
-    }catch(e){
-        console.log(e)
-    }
+      else props.toastNoti(d.msg)
   }
 
   useEffect(() => {
@@ -32,35 +25,28 @@ export default function RentingHouseScreen(props){
 
   const deleteHouse = () => {
     async function deleteHouse(){
-      try{
+      let s = true
         for (var i in checked1) {
           const d = await callApi('/house/' + checked1[i] , false, 'DELETE')
-          if (d.status) {
-            setFetch(!fetch)
-            setChecked1([])
-          } else {
-            //xử lý error
-          }
-        }
-      }catch(e){
-          console.log(e)
-      }
+          if (!d.status) s = false 
+        } 
+        if (s) props.toastNoti("Delete success")
+        else props.toastNoti("Delete fail")
+        setFetch(!fetch)
+        setChecked1([])
     }
     deleteHouse()
   }
-
-  //Còn thiếu phần thêm notification
   
   return (
     <>
-      <NarBar/>
       <div className="container container-screen">
         <div className="d-flex rounded-1 flex-column main-tab">
           <div className="d-flex flex-row align-items-center mb-2 border-bottom">
             <div style={{fontSize: 30}}>
               Danh sách khu trọ
             </div>
-            <button type="button" class="btn btn-outline-info ms-auto" onClick = {() => setShow1(true)}>
+            <button type="button" class="btn btn-outline-info ms-auto" onClick = {() => {setForm1({});setShow1(true)}}>
               Thêm mới
             </button>
             <button type="button" class="btn btn-outline-info ms-2" onClick={deleteHouse}>

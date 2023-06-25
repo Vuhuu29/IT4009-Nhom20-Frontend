@@ -3,85 +3,51 @@ import React, {useEffect, useState } from 'react'
 import callApi from '../../fetchApi/callApiHaveToken'
 
 export default function RentingRoomModal(props) {
-    const [roomServices, setRoomServices] = useState([])
-
-    async function fetchRoomService(){
-        try{
-          const d = await callApi('/service/room/' + props.form.id, false, 'GET')
-          if (d.status) {
-            setRoomServices(d.data)
-          } else {
-            //xử lý error
-          }
-        }catch(e){
-            console.log(e)
-        }
-      }
+    
 
     async function addRoomService(){
-        try{
-            const d = await callApi('/service/room/' + props.form.id, {id_services: roomServices}, 'POST')
-            if (d.status) {
-              //Xử lý lỗi
-            } else {
-              //xử lý error
-            }
-          }catch(e){
-              console.log(e)
-          }
+        const d = await callApi('/service/room/' + props.form.id, {id_services: props.roomServices}, 'POST')
+        return d.status
     }
 
     async function deleteRoomService(){
-        try{
-            const d = await callApi('/service/room/' + props.form.id, false, 'DELETE')
-            if (d.status) {
-              //Xử lý lỗi
-            } else {
-              //xử lý error
-            }
-          }catch(e){
-              console.log(e)
-          }
+        const d = await callApi('/service/room/' + props.form.id, false, 'DELETE')
+        return d.status
     }
-
-    useEffect(() => {
-        if(props.a == 'Lưu') {
-            fetchRoomService()
-        } 
-    }, [])
 
     const createRoom = () => {
         async function createRoom(){
-          try{
             const d = await callApi('/room', props.form, 'POST')
-            if (d.status) {
-              props.setFetch()
-            } else {
-              //xử lý error
+            
+            if (props.roomServices.length != 0) {
+                let status = await addRoomService()
+                if (!status) props.toastNoti('Add service to room fail')
             }
-          }catch(e){
-              console.log(e)
-          }
+            
+            if (d.status) 
+              props.setFetch(!props.fetch)
+              
+            props.toastNoti(d.msg)
         }
+
         createRoom()
-        if (roomServices.length != 0) addRoomService()
       }
   
     const updateRoom = () => {
-        async function updateHouse(){
-            try{
+        async function updateRoom(){
             const d = await callApi('/room/' + props.form.id, props.form, 'PUT')
-            if (d.status) {
+
+            if (props.roomServices.length != 0) {
+                let s1 = await deleteRoomService()
+                let s2 = await addRoomService()
+                if (!(s1 && s2)) props.toastNoti('Update service in room fail')
+            }
+
+            props.toastNoti(d.msg)
+            if (d.status) 
                 props.setFetch(!props.fetch)
-            } else {
-                //xử lý error
-            }
-            }catch(e){
-                console.log(e)
-            }
         }
-        updateHouse()
-        if (roomServices.length != 0) {deleteRoomService(); addRoomService()}
+        updateRoom()
     }
     return (
         <Modal className="modal-lg" show={props.show} onHide = {() => props.setShow(false)}>  
@@ -97,9 +63,9 @@ export default function RentingRoomModal(props) {
                     <div className="col-9">{props.houseName}</div>
                 </div>
                 <div className="row d-flex align-items-center">
-                    <div className="col-3">Tên phòng</div>
+                    <div className="col-3"> Tên phòng * </div>
                     <div className="col-9">
-                        <input type="text" className="form-control text-input" id="input1"
+                        <input type="text" className="form-control text-input" id="input1" required
                             value={(props.form) ? props.form.name : undefined}
                             onChange={(e) => {
                                 props.setForm({
@@ -111,7 +77,7 @@ export default function RentingRoomModal(props) {
                     </div>
                 </div>
                 <div className="row d-flex align-items-center">
-                    <div className="col-3">Số người tối đa</div>
+                    <div className="col-3"> Số người tối đa </div>
                     <div className="col-9">
                         <input type="text" className="form-control text-input" id="input1"
                         value={(props.form) ? props.form.max_user : undefined}
@@ -124,9 +90,9 @@ export default function RentingRoomModal(props) {
                     </div>
                 </div>
                 <div className="row d-flex align-items-center">
-                    <div className="col-3">Đơn giá</div>
-                    <div className="col-9">
-                        <input type="text" className="form-control text-input" id="input1"
+                    <div className="col-3"> Đơn giá * </div>
+                    <div className="col-7 ">
+                        <input type="text" className="form-control text-input" id="input1" required
                         value={(props.form) ? props.form.cost : undefined}
                         onChange={(e) => {
                         props.setForm({
@@ -134,7 +100,9 @@ export default function RentingRoomModal(props) {
                             cost: e.target.value
                         })
                         }}/>
+                        
                     </div>
+                    <div className="col-2 "> Đồng / tháng </div>
                 </div>
                 <div className="row d-flex align-items-center">
                     <div className="col-3">Mô tả</div>
@@ -157,12 +125,12 @@ export default function RentingRoomModal(props) {
                         {props.services && props.services.map((data) => (
                             <div>
                                 <input class="form-check-input me-2 mb-1" type="checkbox" 
-                                checked={roomServices.includes(data.id)}
+                                checked={props.roomServices.includes(data.id)}
                                 onChange={(e) =>{
                                     if (e.target.checked) {
-                                        setRoomServices([...roomServices, data.id]);
+                                        props.setRoomServices([...props.roomServices, data.id]);
                                     } else {
-                                        setRoomServices(roomServices.filter((item) => item !== data.id));
+                                        props.setRoomServices(props.roomServices.filter((item) => item !== data.id));
                                     }
                                   }}
                                 />

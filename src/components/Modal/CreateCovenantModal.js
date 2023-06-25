@@ -5,61 +5,55 @@ import callApi from '../../fetchApi/callApiHaveToken';
 export default function CreateCovenantModal(props) {
 
     const [roomId, setRoomId] = useState()
-    const [renterId, setRenterId] = useState()
+    const [rooms, setRooms] = useState([])
+
+    useEffect(() => {
+        if (props.show){
+            async function fetchRoom(){
+                    const d = await callApi('/room/house/' + props.form.house_id, false, 'GET')
+                    if (d.status) 
+                    setRooms(d.data)
+                    else 
+                    props.toastNoti(d.msg)
+            }
+
+            fetchRoom()
+        }
+        
+    }, [props.show])
 
     const createCovenant = () => {
         async function createCovenant(){
-            try{
-                const renter = {
-                    name: props.form.name,
-                    phone: props.form.phone,
-                    birthday: props.form.birthday,
-                    gender: props.form.gender,
-                    password: '123456'
-                }
-                const renterData = await callApi('/renter', renter, 'POST')
-                if (renterData.status) {
-                    const covenant = {
-                        room_id: roomId,
-                        renter_id: renterData.data.newRenter.id,
-                        duration: props.form.duration,
-                        started_date: props.form.started_date,
-                        end_date: props.form.end_date,
-                        pre_pay: props.form.pre_pay,
-                        pay_time: props.form.pay_time,
-                        note: props.form.note
-                    }
-                    const d = await callApi('/covenant', covenant, 'POST')
-                    if (d.status) {
-                        props.setFetch(!props.fetch)
-                    } else {
-                        //xử lý error
-                    }
-                    setRenterId(renterData.data.newRenter.id)
-                } else {
-                    //xử lý error
-                }
-            }catch(e){
-                console.log(e)
+            const renter = {
+                name: props.form.name,
+                phone: props.form.phone,
+                birthday: props.form.birthday,
+                gender: props.form.gender, 
+                state: 'RENTING'
             }
+
+            const renterData = await callApi('/renter', renter, 'POST')
+
+            if (renterData.status) {
+                const covenant = {
+                    room_id: roomId,
+                    renter_id: renterData.data.newRenter.id,
+                    duration: props.form.duration,
+                    started_date: props.form.started_date,
+                    end_date: props.form.end_date,
+                    pre_pay: props.form.pre_pay,
+                    pay_time: props.form.pay_time,
+                    note: props.form.note
+                }
+                const d = await callApi('/covenant', covenant, 'POST')
+                props.toastNoti(d.msg)
+                if (d.status) 
+                    props.setFetch(!props.fetch)
+
+            } else props.toastNoti(renterData.msg)
           }
         createCovenant()
-    }
-
-    const updateCovenant = () => {
-        async function updateCovenant(){
-            try{
-                const d = await callApi('/covenant/' + props.form.id, props.form, 'PUT')
-                if (d.status) {
-                props.setFetch(!props.fetch)
-                } else {
-                //xử lý error
-                }
-            }catch(e){
-                console.log(e)
-            }
-        }
-        updateCovenant()
+        props.setShow(false)
     }
 
     return(
@@ -71,26 +65,25 @@ export default function CreateCovenantModal(props) {
             <Modal.Body>
                 <div className="row d-flex align-items-center mb-2">
 
-                    <div class="form-text">Chọn phòng tiến hành ký hợp đồng</div>
+                    <div class="form-text"> Chọn phòng tiến hành ký hợp đồng </div>
 
                     <div className='col-6'>
+
                         <select class="form-select" value={roomId}
                             onChange={(e) => {setRoomId(e.target.value)}}>
 
-                            {props.rooms && props.rooms.map(
+                            {rooms && rooms.map(
                                 (data) => (<option value={data.id}> {data.name} </option>)
                             )}
 
                         </select>
                     </div>
 
-                    
-
                 </div>
 
                 <div className="row d-flex align-items-center mb-2">
 
-                    <div className="col-2" style={{fontWeight: 500}}> Người thuê </div>
+                    <div className="col-2" style={{fontWeight: 500}}> Người thuê * </div>
 
                     <div className="col-4">
                         <input type="text" class="form-control text-input" required placeholder='Họ và tên'
@@ -104,7 +97,7 @@ export default function CreateCovenantModal(props) {
                         />
                     </div>
 
-                    <div className="col-2" style={{fontWeight: 500}}> Số điện thoại </div>
+                    <div className="col-2" style={{fontWeight: 500}}> Số điện thoại * </div>
 
                     <div className="col-4">
                         <input type="text" class="form-control text-input" required
@@ -145,24 +138,24 @@ export default function CreateCovenantModal(props) {
                             onChange={() => {props.setForm({...props.form, gender: 'male'})
                                 }}
                         />
-                        <label class="form-check-label ms-1" for="r11"> Nam </label>
+                        <label class="form-check-label ms-1" htmlFor="r11"> Nam </label>
 
                         <input class="form-check-input ms-3" type="radio" name="radio1" id="r12"
                             checked={(props.form) ? (props.form.gender == "female") : undefined}  
                             onChange={() => { props.setForm({...props.form, gender: 'female'})
                             }}
                         />
-                        <label class="form-check-label ms-1" for="r12"> Nữ </label>
+                        <label class="form-check-label ms-1" htmlFor="r12"> Nữ </label>
 
                     </div>
                 </div>
 
                 <div className="row d-flex align-items-center mb-2 overflow-auto h-40">
 
-                    <div className="col-2" style={{fontWeight: 500}}>Thời hạn hợp đồng</div>
+                    <div className="col-2" style={{fontWeight: 500}}> Thời hạn hợp đồng * </div>
 
                     <div className="col-4 d-flex align-items-center">
-                        <input type="text" class="form-control text-input"
+                        <input type="text" class="form-control text-input" required
                             value={props.form.duration}
                             onChange={(e) => {
                                 props.setForm({
@@ -173,9 +166,9 @@ export default function CreateCovenantModal(props) {
                         /> Tháng 
                     </div>
 
-                    <div style={{fontWeight: 500, width: '12%'}}>Ngày bắt đầu</div>
+                    <div style={{fontWeight: 500, width: '12%'}}> Ngày bắt đầu * </div>
 
-                    <div style={{width: '17%'}}>
+                    <div style={{width: '16%'}}>
                         <input class="form-control" type="date" 
                             value={props.form.started_date}
                             onChange={(e) => {
@@ -187,8 +180,8 @@ export default function CreateCovenantModal(props) {
                         />
                     </div>
 
-                    <div style={{fontWeight: 500, width: '4%'}}>đến</div>
-                    <div style={{width: '17%'}}>
+                    <div style={{fontWeight: 500, width: '6%'}}> đến * </div>
+                    <div style={{width: '16%'}}>
                         <input class="form-control" type="date"
                             value={props.form.end_date}
                             onChange={(e) => {
@@ -252,14 +245,10 @@ export default function CreateCovenantModal(props) {
                 </div>
             </Modal.Body>
             <Modal.Footer>  
-                <Button variant="secondary" onClick = {() => {console.log(props.form.gender);props.setShow(false)}}> Hủy bỏ </Button> 
+                <Button variant="secondary" onClick = {() => {props.setShow(false)}}> Hủy bỏ </Button> 
                  
                 <Button variant="primary" 
-                    onClick = {() => {
-                        props.setShow(false)
-                        if ( props.a == 'Thêm') createCovenant()
-                        else updateCovenant()
-                    }}
+                    onClick = {createCovenant}
 
                 > Thêm </Button>  
             </Modal.Footer>  

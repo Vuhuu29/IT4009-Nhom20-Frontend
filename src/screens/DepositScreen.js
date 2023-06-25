@@ -1,160 +1,170 @@
-import { useState } from "react";
-import NarBar from "../components/NavBar";
-import {Modal, Button} from 'react-bootstrap';
+import { useState, useEffect } from "react";
+import CreateDepositModal from "../components/Modal/CreateDepositModal";
+import UpdateDepositModal from "../components/Modal/UpdateDepositModal";
+import callApi from "../fetchApi/callApiHaveToken";
+
+
 
 export default function DepositScreen(props){
-    const deposits = [
-      {
-        'room': 'Phòng không người',
-        'renter': 'Người không tên',
-        'phone': '666 666',
-        'cost': '500 000', 
-        'time_start': '02/03/2023',
-        'time_end': '10/03/2023'
+    const [deposits, setDeposits] = useState([])
+    const [show1, setShow1] = useState(false)
+    const [show2, setShow2] = useState(false)
+    const [form1, setForm1] = useState({})
+    const [form2, setForm2] = useState({})
+    const [houseId, setHouseId] = useState()
+    const [houses, setHouses] = useState([]) 
+    const [houseName, setHouseName] = useState()
+    const [checked, setChecked] = useState([])
+    const [fetch, setFetch] = useState(true)
+
+    async function fetchHouse(){
+      const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
+      if (d.status) {
+
+        for (let i in d.data) 
+          setHouses(d.data)
+
+        if (d.data.length > 0) 
+          setHouseId(d.data[0].id)
       }
-    ]
-    const [show, setShow] = useState(false);
+        
+      else 
+      props.toastNoti(d.msg)
+    }
+
+    async function fetchDeposit(){
+      if(houseId){
+        const d = await callApi('/deposit/house/' + houseId, false, 'GET')
+        if (d.status) 
+          setDeposits(d.data)
+        else 
+          props.toastNoti(d.msg)
+      }
+    }
+
+    useEffect(() => {
+      fetchHouse()
+    }, [])
+
+    useEffect( () => {
+      fetchDeposit()
+    } ,[houseId, fetch])
+
+    const deleteDeposit = () => {
+      async function deleteDeposit(){
+        let s = true
+        for (var i in checked) {
+          const d = await callApi('/deposit/' + checked[i] , false, 'DELETE')
+          if (d.status) s = false 
+        }
+
+        setChecked([])
+        if (s) 
+          props.toastNoti("Delete success")
+        else 
+          props.toastNoti("Delete fail")
+        setFetch(!fetch)
+      }
+      deleteDeposit()
+    }
+
+    const addDeposit = () => {
+      setHouseName(houses.filter((h) => h.id == houseId)[0].name)
+      setShow1(true)
+      setForm1({...form1, house_id: houseId})
+    }
+
+    const updateDeposit = (data) => {
+      setForm2(data)
+      setShow2(true);
+    }
+
+
     return (
       <>
-        <NarBar/>
           <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
             <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
               <div className="d-flex flex-row align-items-center mb-2 border-bottom">
                   <div style={{fontSize: 30}}>
                       Quản lý đặt cọc
                   </div>
-                  <select class="form-select ms-auto w-25" aria-label=".form-select-lg example">
-                      <option value="1">Khu trọ 1</option>
-                      <option value="2">Khu trọ 2</option>
-                      <option value="3">Khu trọ 3</option>
+                  <select class="form-select ms-auto w-25" value={houseId} 
+                    onChange={(e) => {setHouseId(e.target.value)}}>
+                      {houses && houses.map((data) => (<option value = { data.id }> {data.name} </option>))}
                   </select>
               </div>
 
               <div className="d-flex flex-row align-items-center mb-2">
-                  <button type="button" class="btn btn-outline-info ms-auto" onClick={() => setShow(true)}>
+
+                  <button type="button" class="btn btn-outline-info ms-auto" onClick={addDeposit}>
                       Thêm mới
                   </button>
-                  <button type="button" class="btn btn-outline-info ms-2">
-                      Tìm kiếm
+                  <button type="button" class="btn btn-outline-info ms-2" onClick={deleteDeposit}>
+                      Xóa
                   </button>
-                  <button type="button" class="btn btn-outline-info ms-2">
-                      Xuất excel
-                  </button>
-
-                  <Modal className="modal-lg" show={show} onHide = {() => setShow(false)}>  
-                    <Modal.Header closeButton>  
-                      <Modal.Title>Thêm mới</Modal.Title>  
-                    </Modal.Header>  
-                    
-                    <Modal.Body>  
-                      
-                      <div className="row d-flex align-items-center mb-2">
-                          <div className="col-2" style={{fontWeight: 500}}>Khu trọ</div>
-                          <div className="col-4">Dãy nhà trọ không tên</div>
-                          <div className="col-2" style={{fontWeight: 500}}>Khách thuê</div>
-                          <div className="col-4">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
-                            <label class="form-check-label ms-1" for="flexRadioDefault1">
-                              Thêm mới
-                            </label>
-                            <input class="form-check-input ms-3" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                            <label class="form-check-label ms-1" for="flexRadioDefault2">
-                              Đã tồn tại
-                            </label>
-                          </div>
-                      </div>
-                      <div className="row d-flex align-items-center mb-2">
-                        <div className="col-2" style={{fontWeight: 500}}>Phòng</div>
-                        <div className="col-4">
-                          <select class="form-select" aria-label=".form-select-lg example">
-                            <option value="1">Khu trọ 1</option>
-                            <option value="2">Khu trọ 2</option>
-                            <option value="3">Khu trọ 3</option>
-                          </select>
-                        </div>
-                        <div className="col-2" style={{fontWeight: 500}}>Tên khách</div>
-                        <div className="col-4">
-                          <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                        </div>
-                      </div>
-                      
-                      <div className="row d-flex align-items-center mb-2">
-                        <div className="col-2" style={{fontWeight: 500}}>Ngày đặt cọc</div>
-                        <div className="col-4">
-                            <input id="startDate" class="form-control" type="date" />
-                        </div>
-                        <div className="col-2" style={{fontWeight: 500}}>Số CCCD</div>
-                        <div className="col-4">
-                          <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                        </div>
-                      </div>
-                      <div className="row d-flex align-items-center mb-2">
-                        <div className="col-2" style={{fontWeight: 500}}>Ngày hết hạn</div>
-                        <div className="col-4">
-                          <input id="startDate" class="form-control" type="date" />
-                        </div>
-                        <div className="col-2" style={{fontWeight: 500}}>Ngày sinh</div>
-                        <div className="col-4">
-                          <input id="startDate" class="form-control" type="date" />
-                        </div>
-                      </div>
-                      <div className="row d-flex align-items-center mb-2">
-                        <div className="col-2" style={{fontWeight: 500}}>Tiền đặt cọc</div>
-                        <div className="col-4">
-                          <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                        </div>
-                        <div className="col-2" style={{fontWeight: 500}}>Số điện thoại</div>
-                        <div className="col-4">
-                          <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                        </div>
-                      </div>
-                      <div className="row d-flex align-items-center mb-2">
-                        <div className="col-2" style={{fontWeight: 500}}>Ghi chú</div>
-                        <div className="col-4">
-                          <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                        </div>
-                        <div className="col-2" style={{fontWeight: 500}}>Email</div>
-                        <div className="col-4">
-                          <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
-                        </div>
-                      </div>
-                    </Modal.Body>  
-                    
-                    <Modal.Footer>  
-                      <Button variant="secondary" onClick = {() => setShow(false)}>Hủy bỏ</Button>  
-                      <Button variant="primary" onClick = {() => setShow(false)}>Lưu lại</Button>  
-                    </Modal.Footer>  
-                  </Modal> 
 
               </div>
+
               <table class="table table-bordered rounded-1">
-                  <thead>
+
+                <thead>
+                  <tr>
+                    <th>
+                      <input class="form-check-input" type="checkbox" checked={checked.length === deposits.length} 
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            const all= deposits.map((r) => r.id);
+                            setChecked(all);
+                          } else {
+                            setChecked([]);
+                          }
+                        }}
+                      />
+                    </th>
+                    <th scope="col"> Tên phòng </th>
+                    <th scope="col"> Người đặt cọc </th>
+                    <th scope="col"> Số điện thoại </th>
+                    <th scope="col"> Tiền đặt cọc </th>
+                    <th scope="col"> Ngày đặt cọc </th>
+                    <th scope="col"> Ngày hết hạn </th>
+                    <th scope="col"> </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {deposits && deposits.map((data) => (
                     <tr>
-                      <th><input class="form-check-input" type="checkbox"/></th>
-                      <th scope="col">Tên phòng</th>
-                      <th scope="col">Người đặt cọc</th>
-                      <th scope="col">Số điện thoại</th>
-                      <th scope="col">Tiền đặt cọc</th>
-                      <th scope="col">Ngày đặt cọc</th>
-                      <th scope="col">Ngày hết hạn</th>
+                      <td>
+                        <input class="form-check-input" type="checkbox" checked={checked.includes(data.id)} 
+                          onChange={(e) =>{
+                            if (e.target.checked) {
+                              setChecked([...checked, data.id]);
+                            } else {
+                              setChecked(checked.filter((item) => item !== data.id));
+                            }
+                          }}
+                        />
+                      </td>
+                      <td> {data.room_name} </td>
+                      <td> {data.renter_name} </td>
+                      <td> {data.renter_phone} </td>
+                      <td> {data.tien_coc} </td>
+                      <td> {data.start_time} </td>
+                      <td> {data.end_time} </td>
+                      <td>
+                        <img src="./edit.svg" onClick={() => {updateDeposit(data)}}/>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {deposits.map((data) => (
-                      <tr>
-                        <td><input class="form-check-input" type="checkbox"/></td>
-                        <td scope="row">{data.room}</td>
-                        <td>{data.renter}</td>
-                        <td>{data.phone}</td>
-                        <td>{data.cost}</td>
-                        <td>{data.time_start}</td>
-                        <td>{data.time_end}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                  ))}
+                </tbody>
+
+              </table>
+              
             </div>
           </div>  
+
+          <CreateDepositModal show={show1} setShow={setShow1} toastNoti={props.toastNoti} houseName={houseName} fetch={fetch} setFetch={setFetch} form = {form1} setForm = {setForm1}/>
+          <UpdateDepositModal show={show2} setShow={setShow2} toastNoti={props.toastNoti} fetch={fetch} setFetch={setFetch} form = {form2} setForm = {setForm2}/>
       </>
     )
 }

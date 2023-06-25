@@ -24,7 +24,6 @@ export default function BillScreen(props){
 
   return (
       <>
-        <NarBar/>
         <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
             <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
                 <div className="d-flex flex-row align-items-center mb-2 border-bottom">
@@ -59,26 +58,26 @@ export default function BillScreen(props){
                 </div>
 
                 <div className="d-flex flex-row align-items-center mb-2">
-                  <div className="col-1" style={{fontWeight: 700}}>Tháng xuất</div>
+                  <div className="col-1" style={{fontWeight: 700}}> Tháng xuất </div>
                   <div className="col-4">
                       <input id="startDate" class="form-control" type="date" />
                   </div>
-                  <div className="col-1 ms-2" style={{fontWeight: 700}}>Trạng thái</div>
+                  <div className="col-1 ms-2" style={{fontWeight: 700}}> Trạng thái </div>
                   <div className="col-5">
                     <input class="form-check-input" type="radio" name="radio2" id="r21"/>
-                    <label class="form-check-label ms-1" for="r21">
+                    <label class="form-check-label ms-1" htmlFor="r21">
                       Tất cả
                     </label>
                     <input class="form-check-input ms-2" type="radio" name="radio2" id="r22"/>
-                    <label class="form-check-label ms-1" for="r22">
+                    <label class="form-check-label ms-1" htmlFor="r22">
                       Chưa thanh toán
                     </label>
                     <input class="form-check-input ms-2" type="radio" name="radio2" id="r23"/>
-                    <label class="form-check-label ms-1" for="r23">
+                    <label class="form-check-label ms-1" htmlFor="r23">
                       Đã thanh toán
                     </label>
                     <input class="form-check-input ms-2" type="radio" name="radio2" id="r24"/>
-                    <label class="form-check-label ms-1" for="r24">
+                    <label class="form-check-label ms-1" htmlFor="r24">
                       Chưa xuất
                     </label>
                   </div>
@@ -96,16 +95,16 @@ export default function BillScreen(props){
                           setChecked1([]);
                         }
                       }}/></th>
-                      <th scope="col">Sửa</th>
-                      <th scope="col">Tháng / năm</th>
-                      <th scope="col">Phòng</th>
-                      <th scope="col">Người thuê</th>
-                      <th scope="col">Loại hóa đơn</th>
-                      <th scope="col">Thành tiền</th>
-                      <th scope="col">Thanh toán</th>
-                      <th scope="col">Dư / nợ mới</th>
-                      <th scope="col">Ngày thanh toán</th>
-                      <th scope="col">Đã thanh toán</th>
+                      <th scope="col"> Sửa </th>
+                      <th scope="col"> Tháng / năm </th>
+                      <th scope="col"> Phòng </th>
+                      <th scope="col"> Người thuê </th>
+                      <th scope="col"> Loại hóa đơn </th>
+                      <th scope="col"> Thành tiền </th>
+                      <th scope="col"> Thanh toán </th>
+                      <th scope="col"> Dư / nợ mới </th>
+                      <th scope="col"> Ngày thanh toán </th>
+                      <th scope="col"> Đã thanh toán </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -136,29 +135,29 @@ export default function BillScreen(props){
 
                 <Modal className="modal-xl" show={show} onHide = {() => setShow(false)}>  
                     <Modal.Header closeButton>  
-                      <Modal.Title>Xuất hóa đơn - Khu trọ 1</Modal.Title>  
+                      <Modal.Title> Xuất hóa đơn - Khu trọ 1 </Modal.Title>  
                     </Modal.Header>  
                     
                     <Modal.Body>
                       <div className="row d-flex align-items-center mb-2">
-                          <div className="col-2" style={{fontWeight: 500}}>Tháng năm</div>
+                          <div className="col-2" style={{fontWeight: 500}}> Tháng năm </div>
                           <div className="col-4">
                               <input id="startDate" class="form-control" type="date" />
                           </div>
-                          <div className="col-2" style={{fontWeight: 500}}>Mã hợp đồng</div>
+                          <div className="col-2" style={{fontWeight: 500}}> Mã hợp đồng </div>
                           <div className="col-4">
                               <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
                           </div>
                           
                       </div>
                       <div className="row d-flex align-items-center mb-2">
-                        <div className="col-2" style={{fontWeight: 500}}>Mã hóa đơn</div>
+                        <div className="col-2" style={{fontWeight: 500}}> Mã hóa đơn </div>
                         <div className="col-4">
                             <input type="text" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 py-0" id="input1"/>
                         </div>
                       </div>
                       <div className="row d-flex align-items-center mb-2">
-                        <div className="ms-auto">Tổng tiền trả còn lại trước đó: 800000 đ</div>
+                        <div className="ms-auto"> Tổng tiền trả còn lại trước đó: 800000 đ </div>
                       </div>
                       <table class="table table-bordered rounded-1 mb-2">
                         <thead>
@@ -176,12 +175,12 @@ export default function BillScreen(props){
                           {services.map((data) => (
                             <tr>
                               <td><input class="form-check-input" type="checkbox"/></td>
-                              <td scope="row">{data.name}</td>
-                              <td>{data.unit}</td>
-                              <td>{data.cost}</td>
-                              <td>{data.num}</td>
-                              <td>{data.pre_pay}</td>
-                              <td>{data.sum}</td>
+                              <td scope="row"> {data.name} </td>
+                              <td> {data.unit} </td>
+                              <td> {data.cost} </td>
+                              <td> {data.num} </td>
+                              <td> {data.pre_pay} </td>
+                              <td> {data.sum} </td>
                             </tr>
                           ))}
                         </tbody>

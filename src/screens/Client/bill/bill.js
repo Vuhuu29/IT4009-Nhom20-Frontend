@@ -13,17 +13,13 @@ export default function MyBill() {
     useEffect(() => {
         async function fetchBill(){
             let idRenter = localStorage.getItem("userId")
-            try{
-                const d = await callApi('/bill/' + idRenter, false, 'GET')
+            const d = await callApi('/bill/' + idRenter, false, 'GET')
                 if (d.status) {
                     console.log(d.data)
                     setListBill(d.data)
                 } else {
                     //xử lý error
                 }
-            }catch(e){
-                console.log(e)
-            }
         }
         fetchBill();
     }, [])

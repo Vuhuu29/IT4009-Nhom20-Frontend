@@ -14,31 +14,28 @@ export default function RenterScreen(props){
     const [checked, setChecked] = useState([])
 
     async function fetchHouse(){
-      try{
-        const d = await callApi('/house', false, 'GET')
-        if (d.status) {
+      const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
+      if (d.status) {
+
+        for (let i in d.data) 
           setHouses(d.data)
-          if (d.length != 0)
-            setHouseId(d.data[0].id)
-        } else {
-          //xử lý error
-        }
-      }catch(e){
-          console.log(e)
+
+        if (d.data.length > 0) 
+          setHouseId(d.data[0].id)
       }
+        
+      else 
+      props.toastNoti(d.msg)
     }
 
     async function fetchRenter(){
-      try{
-        // lấy danh sách người thuê của khu trọ đang chọn
+
+      if(houseId){
         const d = await callApi('/renter/house/' + houseId, false, 'GET')
-        if (d.status) {
+        if (d.status) 
           setRenters(d.data)
-        } else {
-          //xử lý error
-        }
-      }catch(e){
-          console.log(e)
+        else 
+          props.toastNoti(d.msg)
       }
     }
 
@@ -52,19 +49,17 @@ export default function RenterScreen(props){
 
     const deleteRenter = () => {
       async function deleteRenter(){
-        try{
-          for (var i in checked) {
-            const d = await callApi('/renter/' + checked[i] , false, 'DELETE')
-            if (d.status) {
-              setFetch(!fetch)
-              setChecked([])
-            } else {
-              //xử lý error
-            }
-          }
-        }catch(e){
-            console.log(e)
-        }
+        let s = true
+        for (var i in checked) {
+          const d = await callApi('/renter/' + checked[i] , false, 'DELETE')
+          if (d.status) s = false 
+        }  
+        setChecked([])
+        if (s) 
+          props.toastNoti("Delete success")
+        else 
+          props.toastNoti("Delete fail")
+        setFetch(!fetch)
       }
       deleteRenter()
     }
@@ -78,7 +73,6 @@ export default function RenterScreen(props){
 
     return (
       <>
-        <NarBar/>
         <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
             <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
                 <div className="d-flex flex-row align-items-center mb-2 border-bottom">
@@ -117,7 +111,7 @@ export default function RenterScreen(props){
                       <th scope="col"> Họ và tên </th>
                       <th scope="col"> Số điện thoại </th>
                       <th scope="col"> Giới tính </th>
-                      <th scope="col"> Năm sinh </th>
+                      <th scope="col"> Ngày sinh </th>
                       <th scope="col"> Phòng </th> {/* Có thể trống */}
                       <th scope="col"></th>
                     </tr>
@@ -150,6 +144,6 @@ export default function RenterScreen(props){
             </div>
         </div>
 
-        <RenterModal title="Sửa thông tin khách thuê" a="Lưu" show={show} setShow={setShow} form={form} setForm={setForm} fetch={fetch} setFetch={setFetch} houseName={houseName}/>
+        <RenterModal title="Sửa thông tin khách thuê" a="Lưu" show={show} setShow={setShow} form={form} setForm={setForm} fetch={fetch} setFetch={setFetch} houseName={houseName} toastNoti={props.toastNoti}/>
     </>
 )}

@@ -1,7 +1,30 @@
 import { Modal, Button } from "react-bootstrap"
+import callApi from '../../fetchApi/callApiHaveToken';
 
 export default function RenterModal (props) {
 
+    const updateRenter = () => {
+        async function updateRenter(){
+            const renter = {
+                phone: props.form.phone,
+                name: props.form.name, 
+                birthday: props.form.birthday,
+                address: props.form.address,
+                email: props.form.email,
+                gender: props.form.gender
+            }
+            const d = await callApi('/renter/' + props.form.id, renter, 'PUT')
+            
+            props.toastNoti(d.msg)
+            if (d.status) {
+                props.setFetch(!props.fetch)
+                console.log('bbf')
+            }
+                
+        }
+        updateRenter()
+        props.setShow(false)
+    }
 
     return (
         <Modal className="modal-lg" show={props.show} onHide = {() => props.setShow(false)}>  
@@ -16,7 +39,7 @@ export default function RenterModal (props) {
                 </div>
 
                 <div className="row d-flex align-items-center mb-2">
-                    <div className="col-2" style={{fontWeight: 500}}> Họ và tên </div>
+                    <div className="col-2" style={{fontWeight: 500}}> Họ và tên * </div>
                     <div className="col-4">
                         <input type="text" class="form-control text-input" required
                             value={(props.form) ? props.form.name : undefined}
@@ -32,7 +55,7 @@ export default function RenterModal (props) {
 
                 <div className="row d-flex align-items-center mb-2">
 
-                    <div className="col-2" style={{fontWeight: 500}}> Số điện thoại </div>
+                    <div className="col-2" style={{fontWeight: 500}}> Số điện thoại * </div>
                     <div className="col-4">
                         <input type="text" class="form-control text-input" required
                             value={(props.form) ? props.form.phone : undefined}
@@ -65,11 +88,11 @@ export default function RenterModal (props) {
                     <div className="col-2" style={{fontWeight: 500}}> Ngày sinh </div>
                     <div className="col-4">
                         <input id="startDate" class="form-control" type="date" 
-                            value={(props.form) ? props.form.name : undefined}
+                            value={(props.form) ? props.form.birthday : undefined}
                             onChange={(e) => {
                                 props.setForm({
                                     ...props.form,
-                                    name: e.target.value
+                                    birthday: e.target.value
                                 })
                             }}
                         />
@@ -82,13 +105,13 @@ export default function RenterModal (props) {
                             checked={(props.form) ? (props.form.gender == "male") : undefined}  
                             onChange={() => props.setForm({...props.form, gender: 'male'})}
                         />
-                        <label class="form-check-label ms-1" for="r11"> Nam </label>
+                        <label class="form-check-label ms-1" htmlFor="r11"> Nam </label>
 
                         <input class="form-check-input ms-3" type="radio" name="radio1" id="r12"
                             checked={(props.form) ? (props.form.gender == "female") : undefined}  
                             onChange={() => props.setForm({...props.form, gender: 'female'})}
                         />
-                        <label class="form-check-label ms-1" for="r12"> Nữ </label>
+                        <label class="form-check-label ms-1" htmlFor="r12"> Nữ </label>
 
                     </div>
                 </div>
@@ -114,7 +137,7 @@ export default function RenterModal (props) {
             
             <Modal.Footer>  
                 <Button variant="secondary" onClick = {() => props.setShow(false)}> Hủy bỏ </Button>  
-                <Button variant="primary" onClick = {() => props.setShow(false)}> Lưu </Button>  
+                <Button variant="primary" onClick = {updateRenter}> Lưu </Button>  
             </Modal.Footer>  
         </Modal> 
     )

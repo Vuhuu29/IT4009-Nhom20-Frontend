@@ -1,14 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import { useNavigate } from "react-router-dom";
 
 export default function NarBar() {
-    const navigate = useNavigate()
-    const logoutHandle = () => {
-        localStorage.removeItem("token")
-        localStorage.removeItem("UserRole")
-        localStorage.removeItem("UserId")
-        navigate('/')
-        window.location.reload(false)
+    const  logoutHandle = async () => {
+        await localStorage.removeItem("token")
+        await localStorage.removeItem("UserRole")
+        await localStorage.removeItem("UserId")
+        window.location.href = "/"
     }
     
     return (
@@ -31,7 +28,7 @@ export default function NarBar() {
                     </li>
                     
                     <li className="nav-item dropdown">
-                        <a href="convenant" className="nav-link dropdown-toggle">Hợp đồng</a>
+                        <a href="#" className="nav-link dropdown-toggle">Hợp đồng</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="covenant">Hợp đồng</a></li>
                             <li><a class="dropdown-item" href="deposit">Đặt cọc</a></li>

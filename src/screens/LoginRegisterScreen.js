@@ -19,11 +19,13 @@ export default function LoginRegisterScreen(props){
       {checkLogin ?
         <LoginFormComponent
             checkLogin={checkLogin}
-            setCheckLogin={setCheckLogin}     
+            setCheckLogin={setCheckLogin} 
+            toastNoti={props.toastNoti}    
         /> :
         <RegisterFormComponent
             checkLogin={checkLogin}
-            setCheckLogin={setCheckLogin}
+            setCheckLogin={setCheckLogin} 
+            toastNoti={props.toastNoti} 
         />
       }
     </>

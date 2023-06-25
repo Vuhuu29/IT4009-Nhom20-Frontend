@@ -4,32 +4,22 @@ export default function ServiceModal(props) {
 
     const createService = () => {
         async function createService(){
-          try{
-            const d = await callApi('/service', props.form, 'POST')
-            if (d.status) {
+          const d = await callApi('/service', props.form, 'POST')
+          if (d.status) 
               props.setFetch(!props.fetch)
-            } else {
-              //xử lý error
-            }
-          }catch(e){
-              console.log(e)
-          }
+              
+          props.toastNoti(d.msg)
         }
         createService()
       }
   
       const updateService = () => {
         async function updateService(){
-          try{
-            const d = await callApi('/service/' + props.form.id, props.form, 'PUT')
-            if (d.status) {
+          const d = await callApi('/service/' + props.form.id, props.form, 'PUT')
+
+          props.toastNoti(d.msg)
+          if (d.status) 
               props.setFetch(!props.fetch)
-            } else {
-              //xử lý error
-            }
-          }catch(e){
-              console.log(e)
-          }
         }
         updateService()
       }
@@ -41,11 +31,9 @@ export default function ServiceModal(props) {
             </Modal.Header>  
             
             <Modal.Body>  
-                <div className="row mb-2">
-                </div>
-                <div className="row mb-2">
+                <div className="row d-flex align-items-center">
                     <div className="col-3">
-                        Tên dịch vụ
+                        Tên dịch vụ *
                     </div>
                     <div className="col-9">
                         <input type="text" class="form-control text-input" required
@@ -58,12 +46,12 @@ export default function ServiceModal(props) {
                         }}/>
                     </div>
                 </div>
-                <div className="row mb-2">
+                <div className="row d-flex align-items-center">
                     <div className="col-3">
                         Mô tả
                     </div>
                     <div className="col-9">
-                        <input type="text" class="form-control text-input" required
+                        <input type="text" class="form-control text-input" 
                         value={(props.form) ? props.form.description : undefined}
                         onChange={(e) => {
                           props.setForm({
@@ -73,9 +61,9 @@ export default function ServiceModal(props) {
                         }}/>
                     </div>
                 </div>
-                <div className="row mb-2">
+                <div className="row d-flex align-items-center">
                     <div className="col-3">
-                        Đơn giá
+                        Đơn giá *
                     </div>
                     <div className="col-5">
                         <input type="text" class="form-control text-input" required
@@ -88,10 +76,10 @@ export default function ServiceModal(props) {
                         }}/>
                     </div>
                     <div className="col-2">
-                        Đơn vị
+                        Đơn vị *
                     </div>
                     <div className="col-2">
-                        <input type="text" class="form-control text-input" 
+                        <input type="text" class="form-control text-input" required
                         value={(props.form) ? props.form.unit : undefined}
                         onChange={(e) => {
                           props.setForm({

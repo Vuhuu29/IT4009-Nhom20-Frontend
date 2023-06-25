@@ -21,14 +21,16 @@ import My404Component from "./screens/NotFoundScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
 import { useState } from "react";
 import { Toast } from "react-bootstrap";
+import NarBar from "./components/NavBar";
 
 function App() {
   const [show, setShow] = useState(true)
   const [notis, setNotis] = useState([])
   const [hideNotis, setHideNotis] = useState([])
 
-  const addNoti = (n) => {
+  const toastNoti = (n) => {
     setNotis([...notis, n])
+    setShow(true)
   }
 
   return (
@@ -36,34 +38,93 @@ function App() {
       {(localStorage.getItem('token')) ? 
         <BrowserRouter>
           <Routes>
-            <Route path="/" exact element={<HomeScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/bill" element={<BillScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/covenant" element={<CovenantScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/finance" element={<FinanceScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/incident" element={<IncidentScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/rentinghouse" element={<RentingHouseScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/account" element={<AccountScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/rentingroom" element={<RentingRoomScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/services" element={<ServiceScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/deposit" element={<DepositScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/renter" element={<RenterScreen setShow={setShow} setNoti={addNoti}/>}/>
-            <Route path="/client/" element={<LayoutRenter />}>
-              <Route path="/client/" element={<DashbroadRenter />} />
-              <Route path="/client/room" element={<Myhouse />} />
-              <Route path="/client/bill/" element={<MyBill />} />
+            <Route path="/" exact element={
+              <>
+                <NarBar/>
+                <HomeScreen toastNoti={toastNoti}/>
+              </>
+              }/>
+            <Route path="/bill" element={
+              <>
+                <NarBar/>
+                <BillScreen toastNoti={toastNoti}/>
+              </>
+            }/>
+            <Route path="/covenant" element={
+              <>
+                <NarBar/>
+                <CovenantScreen toastNoti={toastNoti}/>
+              </>
+            }/>
+            <Route path="/finance" element={
+              <>
+                <NarBar/>
+                <FinanceScreen toastNoti={toastNoti}/>
+              </>
+            }/>
+            <Route path="/incident" element={
+              <>
+                <NarBar/>
+                <IncidentScreen toastNoti={toastNoti}/>
+              </>
+              }/>
+            <Route path="/rentinghouse" element={
+              <>
+                <NarBar/>
+                <RentingHouseScreen toastNoti={toastNoti}/>
+              </>
+            }/>
+            <Route path="/account" element={
+              <>
+                <NarBar/>
+                <AccountScreen toastNoti={toastNoti}/>
+              </>
+            }/>
+            <Route path="/rentingroom" element={
+              <>
+                <NarBar/>
+                <RentingRoomScreen toastNoti={toastNoti}/>
+              </>
+              }/>
+            <Route path="/services" element={
+              <>
+                <NarBar/>
+                <ServiceScreen toastNoti={toastNoti}/>
+              </>
+            }/>
+            <Route path="/deposit" element={
+              <>
+                <NarBar/>
+                <DepositScreen toastNoti={toastNoti}/>
+              </>
+              }/>
+            <Route path="/renter" element={
+              <> 
+                <NarBar/>
+                <RenterScreen toastNoti={toastNoti}/>
+              </>
+              }/>
+
+
+            <Route path="/client/" element={<LayoutRenter toastNoti={toastNoti}/>}>
+              <Route path="/client/" element={<DashbroadRenter toastNoti={toastNoti}/>} />
+              <Route path="/client/room" element={<Myhouse toastNoti={toastNoti}/>} />
+              <Route path="/client/bill/" element={<MyBill toastNoti={toastNoti}/>} />
             </Route>
-          <Route path="*" element={<NotFoundScreen />} />
+            
+            <Route path="*" element={<NotFoundScreen />} />
           </Routes>
         </BrowserRouter>
+        
         : 
         <BrowserRouter>
           <Routes>
             <Route path="/" exact element={
-              <HomeScreen setShow={setShow} setNoti={addNoti}/>
+              <HomeScreen toastNoti={toastNoti}/>
             }/>
 
             <Route path="/auth" element={
-              <LoginRegisterScreen setShow={setShow} setNoti={addNoti}/>
+              <LoginRegisterScreen toastNoti={toastNoti}/>
             }/>
 
             <Route path="*" element={<NotFoundScreen />} />

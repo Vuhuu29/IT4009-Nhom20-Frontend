@@ -18,8 +18,7 @@ export default function HomeScreen(props){
 
   useEffect(() => {
     async function fetchDataHouse(){
-      try{
-        const d = await callApi('/house', false, 'GET')
+      const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
         if (d.status) {
           setHouses(d.data)
           fetchDataRoom(d.data[0].id)
@@ -30,31 +29,23 @@ export default function HomeScreen(props){
           })
           setShow(true)
         }
-      }catch(e){
-          console.log(e)
-      }
     }
 
     fetchDataHouse()
   }, [])
 
   async function fetchDataRoom(houseId){
-    try{
-      if(houseId) {
-        const d = await callApi('/room/house/' + houseId, false, 'GET')
-        if (d.status) {
-          setRooms(d.data)
-        } else {
-          setNoti({
-            header: 'Fail to load data', 
-            msg: d.msg
-          })
-          setShow(true)
-        }
+    if(houseId) {
+      const d = await callApi('/room/house/' + houseId, false, 'GET')
+      if (d.status) {
+        setRooms(d.data)
+      } else {
+        setNoti({
+          header: 'Fail to load data', 
+          msg: d.msg
+        })
+        setShow(true)
       }
-      
-    }catch(e){
-        console.log(e)
     }
   }
 
@@ -147,7 +138,6 @@ export default function HomeScreen(props){
   const Logged = () => {
     return (
     <>
-      <NarBar />
       <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
         <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
           <div className="d-flex flex-row">

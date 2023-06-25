@@ -1,6 +1,5 @@
 import NarBar from "../components/NavBar"; 
-import { useState, useEffect } from 'react'; 
-import '../style/css/form.css';
+import { useState, useEffect } from 'react';
 import callApi from "../fetchApi/callApiHaveToken";
 import RentingRoomModal from "../components/Modal/RentingRoomModal";
 
@@ -16,73 +15,67 @@ export default function RentingRoomScreen(props){
   const [fetch, setFetch] = useState(true)
   const [houseName, setHouseName] = useState()
   const [services, setServices] = useState([])
+  const [roomServices, setRoomServices] = useState([]) //Danh sách id của dịch vụ có trong room
+  const roomStatus = {"EMPTY_ROOM": "Còn trống", "USING_ROOM": "Đã cho thuê", "DEPOSIT_ROOM": "Đang đặt cọc", "STOP_ROOM": "Dừng cho thuê"}
 
-  useEffect(() => {
-    async function fetchHouse(){
-      try{
-        const d = await callApi('/house', false, 'GET')
-        if (d.status) {
-          setHouses(d.data)
-          if (d.length != 0)
-            setHouseId(d.data[0].id)
-        } else {
-          //xử lý error
-        }
-      }catch(e){
-          console.log(e)
-      }
+  async function fetchHouse(){
+    const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
+    if (d.status) {
+      setHouses(d.data)
+      if (d.data.length > 0) setHouseId(d.data[0].id)
     }
-    async function fetchServices(){
-      try{
-        const d = await callApi('/service', false, 'GET')
-        if (d.status) {
-          setServices(d.data)
-        } else {
-          //xử lý error
-        }
-      }catch(e){
-          console.log(e)
-      }
-    }
+      
+    else 
+    props.toastNoti(d.msg)
+  }
 
-    fetchServices()
-    fetchHouse()
-  }, [])
-
-  async function fetchRoom(){
-    try{
-      if(houseId){
-        const d = await callApi('/room/house/' + houseId, false, 'GET')
-        if (d.status) {
-          setRooms(d.data)
-        } else {
-          //xử lý error
-        }
-      }
-    }catch(e){
-        console.log(e)
+  async function fetchServices(){
+    if(houseId){
+      const d = await callApi('/service/house/' + houseId, false, 'GET')
+      if (d.status) 
+        setServices(d.data)
+      else 
+        props.toastNoti(d.msg)
     }
   }
 
+  async function fetchRoom(){
+    if(houseId){
+      const d = await callApi('/room/house/' + houseId, false, 'GET')
+      if (d.status) 
+        setRooms(d.data)
+      else 
+        props.toastNoti(d.msg)
+    }
+  }
+
+  useEffect(() => {
+    fetchHouse()
+  }, [])
+
+  useEffect( () => {
+    fetchServices()
+    fetchRoom()
+  } ,[houseId])
+
   useEffect( () => {
     fetchRoom()
-  } ,[houseId, fetch])
+  }, [fetch])
 
   const deleteRoom = () => {
     async function deleteRoom(){
-      try{
-        for (var i in checked) {
-          const d = await callApi('/room/' + checked[i] , false, 'DELETE')
-          if (d.status) {
-            setFetch(!fetch)
-            setChecked([])
-          } else {
-            //xử lý error
-          }
-        }
-      }catch(e){
-          console.log(e)
+      let s = true
+      for (var i in checked) {
+        const d = await callApi('/room/' + checked[i] , false, 'DELETE')
+        if (!d.status) 
+          s = false 
       }
+      setChecked([])
+      if (s) 
+        props.toastNoti("Delete success")
+      else 
+        props.toastNoti("Delete fail")
+      setFetch(!fetch)
     }
     deleteRoom()
   }
@@ -90,20 +83,29 @@ export default function RentingRoomScreen(props){
   const createRoom = () => {
     if (houses.filter((item) => item.id == houseId)[0]) 
       setHouseName(houses.filter((item) => item.id == houseId)[0].name)
-    setForm1({...form1, house_id: houseId})
+    setForm1({house_id: houseId})
     setShow1(true)
   }
 
   const editRoom = (data) => {
     if (houses.filter((item) => item.id == houseId)[0]) 
       setHouseName(houses.filter((item) => item.id == houseId)[0].name)
-    setForm2(data)
-    setShow2(true);
+
+    async function fetchRoomService(roomId){
+      const d = await callApi('/service/room/' + roomId, false, 'GET')
+      if (d.status) {
+        setRoomServices(d.data)
+      } else props.toastNoti(d.msg)
+
+      setForm2(data)
+      setShow2(true);
+    }
+
+    fetchRoomService(data.id)
   }
 
   return (
     <>
-      <NarBar/>
       <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
         <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
           <div className="d-flex flex-row align-items-center mb-2 border-bottom">
@@ -145,7 +147,7 @@ export default function RentingRoomScreen(props){
                 </th>
                 <th scope="col">Tên phòng</th>
                 <th scope="col">Số người ở tối đa</th>
-                <th scope="col">Đơn giá</th>
+                <th scope="col">Đơn giá (đ/tháng) </th>
                 <th scope="col">Trạng thái</th>
                 <th scope="col">Mô tả</th>
                 <th scope="col"></th>
@@ -167,7 +169,7 @@ export default function RentingRoomScreen(props){
                   <td> {data.name} </td>
                   <td> {data.max_user} </td>
                   <td> {data.cost} </td>
-                  <td> {data.state} </td>
+                  <td> {roomStatus[data.status]} </td>
                   <td> {data.description} </td>
                   <td>
                     <img src="./edit.svg" onClick={() => editRoom(data)}/>
@@ -189,6 +191,9 @@ export default function RentingRoomScreen(props){
         setForm = {setForm1} 
         houseId={houseId} 
         services={services}
+        toastNoti={props.toastNoti}
+        roomServices={roomServices}
+        setRoomServices = {setRoomServices}
         a = "Thêm"/>
       <RentingRoomModal 
         show = {show2} 
@@ -201,6 +206,9 @@ export default function RentingRoomScreen(props){
         setForm = {setForm2} 
         houseId={houseId} 
         services={services}
+        toastNoti={props.toastNoti}
+        roomServices={roomServices}
+        setRoomServices = {setRoomServices}
         a = "Lưu"/>
     </>
     

@@ -18,7 +18,7 @@ export default async function callApi(path, data, method) {
             localStorage.removeItem("token")
             localStorage.removeItem("UserRole")
             localStorage.removeItem("UserId")
-            if(!alert('Phiên đăng nhập hết hạn. Đăng nhập lại')) window.location = '/auth'
+            if(!alert('Phiên đăng nhập hết hạn. Đăng nhập lại')) window.location.href = '/auth'
             return
         }
         return data

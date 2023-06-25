@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/css/form.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from "react-router-dom";
 import *as actions from '../actions/index'
 
 export default function LoginFormComponent(props) {
   const [isAlert, setIsAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState()
-  const navigate = useNavigate()
   const userState = useSelector((state) => state.userState)
   const dispatch = useDispatch()
   const [form, setForm] = useState({})
@@ -20,14 +18,9 @@ export default function LoginFormComponent(props) {
           await localStorage.setItem("token", userState.data.token)
           await localStorage.setItem("userId", userState.data.user.id)
           await localStorage.setItem("userRole", userState.data.user.role)
-          navigate("/")
-        }else {
-          if (userState.msg == "Server Error") 
-            setAlertMsg("Thông tin đăng nhập chưa chính xác hoặc tài khoản không tồn tại")
-          else 
-            setAlertMsg(userState.msg)
-          setIsAlert(true)
-        }
+          window.location.href = "/"
+        } else 
+          props.toastNoti(userState.msg)
       }
     }
     storeState()
@@ -47,7 +40,7 @@ export default function LoginFormComponent(props) {
             <div class="p-4 p-md-5" style={{position: 'relative', width: '50%'}}>
               <form class="signin-form">
                 <div class="form-group mb-3">
-                  <label class="label" for="phone">Số điện thoại</label>
+                  <label class="label" htmlFor="phone"> Số điện thoại * </label>
                   <input type="text" class="form-control" id="phone" required
                     onChange={(e) => {
                           setForm({
@@ -57,7 +50,7 @@ export default function LoginFormComponent(props) {
                       }}/>
                 </div>
                 <div class="form-group mb-3">
-                  <label class="label" for="password">Mật khẩu</label>
+                  <label class="label" htmlFor="password"> Mật khẩu * </label>
                   <input type="password" id="password" class="form-control" required
                     onChange={(e) => {
                       setForm({
