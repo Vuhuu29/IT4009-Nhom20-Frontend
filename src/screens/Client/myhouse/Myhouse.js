@@ -1,7 +1,43 @@
 import { Card, CardContent, Container, Divider, Grid, Typography } from "@mui/material";
+import callApi from "../../../fetchApi/callApiHaveToken";
+import React, {useEffect, useState } from 'react'
+import { format } from 'date-fns';
 
 export default function Myhouse() {
+    const [allInfo, setAllInfor] = useState([]);
+    const [allService, setAllService] = useState([]);
+    async function getInfor() {
+        try {
+            // const response = await callApi('/room/3', false , 'get')
 
+            const rs = await callApi('/covenant/renter/'+ localStorage.getItem("userId"), false , 'get')
+            console.log(rs.data)
+            setAllInfor(rs.data)
+            // const room = await callApi('/room/3', false , 'get')
+        }catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function getService() {
+        try {
+            const rs = await callApi('/service/room/'+ allInfo.room?.id, false , 'get')
+            console.log(rs.data)
+            setAllService(rs.data)
+            // const room = await callApi('/room/3', false , 'get')
+        }catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getInfor();
+    }, []);
+
+    useEffect(() => {
+        console.log(allInfo.owner);
+        // getService();
+    }, [allInfo]);
 
     return (
         <>
@@ -26,7 +62,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Chủ nhà:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">Nguyễn Văn A</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.owner?.name|| null}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -35,7 +71,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Số điện thoại:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">0123456789</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.owner?.phone}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -44,7 +80,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Địa chỉ:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">123 Nguyễn Văn A, Phường B, Quận C, TP. D</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.owner?.email}</Typography>
                                     </Grid>
                                 </Grid>
                             </CardContent>
@@ -66,11 +102,11 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Tên phòng:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">Phòng 1</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.room?.name}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
-                                <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                                {/* <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
                                     <Grid item xs={4}>
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Diện tích:</Typography>
                                     </Grid>
@@ -78,13 +114,13 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div">20m2</Typography>
                                     </Grid>
                                 </Grid>
-                                <Divider variant="middle" />
+                                <Divider variant="middle" /> */}
                                 <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
                                     <Grid item xs={4}>
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Số người ở tối đa:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">2</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.room?.maxUser}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -93,16 +129,16 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Giá phòng:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">1.000.000đ</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.room?.cost}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
                                 <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
                                     <Grid item xs={4}>
-                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Trạng thái:</Typography>
+                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Mô tả:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">Đang cho thuê</Typography>
+                                        <Typography variant="h6" component="div">{allInfo.room?.description}</Typography>
                                     </Grid>
                                 </Grid>
                             </CardContent>
@@ -124,7 +160,9 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Ngày bắt đầu:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">01/01/2021</Typography>
+                                        <Typography variant="h6" component="div">
+                                        {allInfo.covenant?.end_date ?format(new Date(allInfo.covenant?.started_date), 'dd/MM/yyyy'): null}
+                                        </Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -133,14 +171,16 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Ngày kết thúc:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">01/01/2022</Typography>
+                                        <Typography variant="h6" component="div">  
+                                            {allInfo.covenant?.end_date ?format(new Date(allInfo.covenant?.end_date), 'dd/MM/yyyy'): null}
+                                        </Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
                                 <Grid item xs={12}>
                                     <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Danh sách dịch vụ hàng tháng:</Typography>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className="pt-2">
                                     <table className="table table-bordered">
                                         <thead>
                                             <tr>

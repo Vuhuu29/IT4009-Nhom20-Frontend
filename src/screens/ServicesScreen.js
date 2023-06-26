@@ -8,6 +8,7 @@ export default function ServiceScreen(props) {
   const [checked, setChecked] = useState([])
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
+  const [showAddServiceIntoRoom, setShowAddServiceIntoRoom] = useState(false)
   const [form1, setForm1] = useState({})
   const [form2, setForm2] = useState({})
   const [fetch, setFetch] = useState(true)
@@ -134,8 +135,9 @@ export default function ServiceScreen(props) {
                   <td> {data.cost} </td>
                   <td> {data.unit} </td>
                   <td> {data.description} </td>
-                  <td>
-                    <img src="./edit.svg" onClick={() => updateService(data)} />
+                  <td style={{width: 80}}>
+                    <img className='mx-2'  src="./edit.svg" onClick={() => updateService(data)} />
+                    <img src="./add.svg" onClick={() => {setForm2(data); setShowAddServiceIntoRoom(true)}} />
                   </td>
                 </tr>
               ))}
