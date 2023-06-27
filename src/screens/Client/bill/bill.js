@@ -1,27 +1,39 @@
 import { Modal } from "bootstrap"
 import { useEffect, useState } from "react"
 import callApi from "../../../fetchApi/callApiHaveToken"
+import format from "date-fns/format"
 
 export default function MyBill() {
     const [listBill, setListBill] = useState([])
     const [listBillDetail, setListBillDetail] = useState([])
-    const [billId, setBillId] = useState()
+    const [myRoom, setMyRoom] = useState([{}])
+
+    async function fetch() {
+        let idRenter = await localStorage.getItem("userId")
+        const d = await callApi('/covenant/renter/3', false, 'GET')
+        if (d.status) {
+            console.log(d.data)
+            setMyRoom(d.data.room)
+        } else {
+            //xử lý error
+        }
+    }
 
 
-
-    
     useEffect(() => {
-        async function fetchBill(){
-            let idRenter = localStorage.getItem("userId")
-            const d = await callApi('/bill/' + idRenter, false, 'GET')
-                if (d.status) {
-                    console.log(d.data)
-                    setListBill(d.data)
-                } else {
-                    //xử lý error
-                }
+        async function fetchBill() {
+            let idRenter = await localStorage.getItem("userId")
+            const d = await callApi('/bill/renter/' + idRenter, false, 'GET')
+            if (d.status) {
+                console.log(d.data)
+                setListBill(d.data)
+            } else {
+                //xử lý error
+            }
         }
         fetchBill();
+        fetch();
+
     }, [])
 
 
@@ -48,11 +60,22 @@ export default function MyBill() {
                         <tbody>
                             {listBill && listBill.map((data) => (
                                 <tr>
-                                    <th scope="row">{data.id}</th>
-                                    <td>{data.date}</td>
-                                    <td>{data.total}</td>
-                                    <td>{data.status}</td>
-                                    <td><button type="button" className="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#billDetail" onClick={() => setBillId(data.id)}>Chi tiết</button></td>
+                                    <th scope="row">#{data.id}</th>
+                                    <td>
+                                        {/* {data.created_at} */}
+                                        {format(new Date(data.created_at), 'dd/MM/yyyy')}
+                                    </td>
+                                    <td>{data.total_price?.toLocaleString('en-US')}</td>
+                                    <td>
+                                        {/* {data.status} */}
+                                        <span
+                                            className={`badge ${data.status === 'UNPAID' ? 'bg-danger' : data.status === 'PENDING' ? 'bg-warning' : 'bg-success'}`}
+                                        >
+                                            {data.status === 'UNPAID' ? 'Chưa thanh toán' : data.status === 'PENDING' ? 'Đang chờ' : 'Đã thanh toán'}
+                                        </span>
+                                    </td>
+                                    <td><button type="button" className="btn btn-outline-info" data-bs-toggle="modal"
+                                        data-bs-target="#billDetail" onClick={() => setListBillDetail(data)}>Chi tiết</button></td>
                                 </tr>
                             ))}
                         </tbody>
@@ -65,32 +88,49 @@ export default function MyBill() {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="billDetailLabel">Chi tiết hóa đơn</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setBillId()}></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setListBillDetail()}></button>
                         </div>
                         <div className="modal-body">
                             <table className="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Tên dịch vụ</th>
-                                        <th scope="col">Đơn giá</th>
-                                        <th scope="col">Số lượng</th>
-                                        <th scope="col">Thành tiền</th>
+                                        <th className="text-left">Tên dịch vụ</th>
+                                        <th className="text-right">Đơn giá</th>
+                                        <th className="text-right">Số lượng</th>
+                                        <th className="text-right">Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {listBillDetail && listBillDetail.map((data) => (
+                                    <tr>
+                                        <th scope="row" >Giá phòng</th>
+                                        <td align="right">{myRoom?.cost?.toLocaleString('en-US')}</td>
+                                        <td align="right">1</td>
+                                        <td align="right">{myRoom?.cost?.toLocaleString('en-US')}</td>
+                                    </tr>
+
+                                    {listBillDetail?.services && listBillDetail?.services.map((data) => (
                                         <tr>
-                                            <th scope="row">{data.name}</th>
-                                            <td>{data.cost}</td>
-                                            <td>{data.quantity}</td>
-                                            <td>{data.total}</td>
+                                            <th scope="row" align="right">{data.name}</th>
+                                            <td align="right">{data.cost?.toLocaleString('en-US')}</td>
+                                            <td align="right">{data.num?.toLocaleString('en-US')}</td>
+                                            <td align="right">{(data.cost ?? 0 * data.num ?? 0).toLocaleString('en-US')}</td>
                                         </tr>
                                     ))}
+                                    <tr className="bg-primary">
+                                        <th className="text-danger" scope="row" colSpan={3}>Nợ cũ</th>
+                                        <td className="text-danger" align="right">{(listBillDetail?.debt ?? 0).toLocaleString('en-US')}</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-light bg-info" scope="row" colSpan={3}>Tổng</th>
+                                        <td className="text-light bg-info" align="right">{(listBillDetail?.total_price ?? 0).toLocaleString('en-US')}</td>
+                                    </tr>
+
                                 </tbody>
+
                             </table>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-outline-info" data-bs-dismiss="modal" onClick={() => setBillId()}>Đóng</button>
+                            <button type="button" className="btn btn-outline-info" data-bs-dismiss="modal" onClick={() => setListBillDetail()}>Đóng</button>
                         </div>
                     </div>
                 </div>

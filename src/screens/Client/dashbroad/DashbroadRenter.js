@@ -1,31 +1,16 @@
 import * as React from 'react';
+import { useEffect, useState } from "react"
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
-
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import callApi from '../../../fetchApi/callApiHaveToken';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -77,6 +62,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function DashbroadRenter() {
+  const [listBill, setListBill] = useState([])
+  useEffect(() => {
+    async function fetchBill() {
+      let idRenter = await localStorage.getItem("userId")
+      const d = await callApi('/bill/renter/' + idRenter, false, 'GET')
+      if (d.status) {
+        console.log(d.data)
+        setListBill(d.data)
+      } else {
+        //xử lý error
+      }
+    }
+    fetchBill();
+
+  }, [])
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -98,7 +98,7 @@ export default function DashbroadRenter() {
                     height: 240,
                   }}
                 >
-                  <Chart />
+                  <Chart  listBill={listBill}  />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -111,13 +111,13 @@ export default function DashbroadRenter() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  <Deposits   listBill={listBill} />
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  <Orders listBill={listBill} />
                 </Paper>
               </Grid>
             </Grid>
