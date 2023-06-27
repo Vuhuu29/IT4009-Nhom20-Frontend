@@ -31,8 +31,9 @@ export default function Chart({ listBill }) {
     listBill.map((data) => {
       arr.push(createData(format(new Date(data.created_at), 'MM/yyyy'),( data.total_price - data.debt)))
     })
+    // console.log(arr)
     setMoney(arr.reverse())
-  }, [])
+  }, [listBill])
 
   return (
     <React.Fragment>
