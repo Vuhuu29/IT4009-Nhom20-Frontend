@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import NarBar from "../components/NavBar";
 import callApi from "../fetchApi/callApiHaveToken";
 import RenterModal from "../components/Modal/RenterModal";
 
@@ -16,12 +15,8 @@ export default function RenterScreen(props){
     async function fetchHouse(){
       const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
       if (d.status) {
-
-        for (let i in d.data) 
-          setHouses(d.data)
-
-        if (d.data.length > 0) 
-          setHouseId(d.data[0].id)
+        setHouses(d.data)
+        if (d.data.length > 0) setHouseId(d.data[0].id)
       }
         
       else 
@@ -65,8 +60,8 @@ export default function RenterScreen(props){
     }
 
     const editRenter = (data) => {
-      if (houses.filter((item) => item.id == houseId)[0]) 
-        setHouseName(houses.filter((item) => item.id == houseId)[0].name)
+      if (houses.filter((item) => item.id === houseId)[0]) 
+        setHouseName(houses.filter((item) => item.id === houseId)[0].name)
       setForm(data)
       setShow(true)
     }
@@ -97,7 +92,7 @@ export default function RenterScreen(props){
                   <thead>
                     <tr>
                       <th>
-                        <input class="form-check-input" type="checkbox" checked={checked.length == renters.length} 
+                        <input class="form-check-input" type="checkbox" checked={checked.length === renters.length} 
                           onChange={(e) => {
                             if (e.target.checked) {
                               const all= renters.map((r) => r.id);
@@ -131,11 +126,11 @@ export default function RenterScreen(props){
                         </td>
                         <td> {data.name} </td>
                         <td> {data.phone} </td>
-                        <td> {data.gender} </td>
+                        <td> {(data.gender == 'male') ? 'Nam' : 'Nữ'} </td>
                         <td> {data.birthday} </td>
-                        <td> {data.room} </td>
+                        <td> {data.room_name} </td>
                         <td>
-                          <img src="./edit.svg" onClick={() => editRenter(data)}/>
+                          <img alt="edit" src="./edit.svg" onClick={() => editRenter(data)}/>
                         </td>
                       </tr>
                     ))}

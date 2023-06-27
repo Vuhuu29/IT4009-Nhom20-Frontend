@@ -11,8 +11,11 @@ export default function CreateDepositModal (props) {
         if (props.show){
             async function fetchRoom(){
                 const d = await callApi('/room/house/' + props.form.house_id, false, 'GET')
-                if (d.status) 
-                setRooms(d.data)
+                if (d.status) {
+                    let r = d.data.filter((r) => r.status === 'EMPTY_ROOM')
+                        setRooms(r)
+                        if (r[0]) setRoomId(r[0].id)
+                }
                 else 
                 props.toastNoti(d.msg)
             }
@@ -47,6 +50,8 @@ export default function CreateDepositModal (props) {
                 props.toastNoti(d.msg)
                 if (d.status) 
                     props.setFetch(!props.fetch)
+                else 
+                    await callApi('/renter/' + renterData.id, renter, 'DELETE')
 
             } else props.toastNoti(renterData.msg)
           }

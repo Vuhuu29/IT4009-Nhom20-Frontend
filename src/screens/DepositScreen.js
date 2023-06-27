@@ -55,7 +55,7 @@ export default function DepositScreen(props){
         let s = true
         for (var i in checked) {
           const d = await callApi('/deposit/' + checked[i] , false, 'DELETE')
-          if (d.status) s = false 
+          if (!d.status) s = false 
         }
 
         setChecked([])
@@ -69,9 +69,10 @@ export default function DepositScreen(props){
     }
 
     const addDeposit = () => {
-      setHouseName(houses.filter((h) => h.id == houseId)[0].name)
+      if (houses.filter((h) => h.id == houseId)[0])
+        setHouseName(houses.filter((h) => h.id == houseId)[0].name)
       setShow1(true)
-      setForm1({...form1, house_id: houseId})
+      setForm1({house_id: houseId})
     }
 
     const updateDeposit = (data) => {

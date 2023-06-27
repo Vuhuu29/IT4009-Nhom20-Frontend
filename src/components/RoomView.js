@@ -1,14 +1,14 @@
-import '../style/css/RoomView.css'
+import '../style/css/form.css'
 export default function RoomView(props) {
     return (
-    <div className={"m-5 p-2 border-top rounded-1 border-warning border-3 " + props.room.status} style={{background: '#fdeeee', boxShadow: '5px 10px #888888', position: 'relative'}}>
+    <div className={"m-5 p-2 " + props.room.status} style={{background: '#fdeeee', boxShadow: 'rgba(0, 0, 0, 0.34) 0px 5px 20px -17px', position: 'relative', width: '90%'}}>
         <div className="d-flex flex-row" style={{fontSize: 20}}>
             {props.room.name}
             <div className="ms-auto d-flex align-items-center" style={{fontSize: 14}}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill me-1" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
             </svg>
-            {((props.room.num) ? props.room.num : "--") + '/' + ((props.room.max_num) ? props.room.max_num : "--")}
+            {((props.room.num) ? props.room.num : "--") + '/' + ((props.room.max_user) ? props.room.max_user : "--")}
             </div>
         </div>
         <div className="col mt-2 px-2" style={{fontSize: 14}}>

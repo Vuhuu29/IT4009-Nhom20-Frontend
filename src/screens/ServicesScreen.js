@@ -38,6 +38,8 @@ export default function ServiceScreen(props) {
 
 
   useEffect(() => {
+
+    
     fetchHouse()
   }, [])
 
@@ -100,7 +102,7 @@ export default function ServiceScreen(props) {
             <thead>
               <tr>
                 <th>
-                  <input class="form-check-input" type="checkbox" checked={checked.length == services.length} 
+                  <input class="form-check-input" type="checkbox" checked={checked.length === services.length} 
                     onChange={(e) => {
                       if (e.target.checked) {
                         const allServices = services.map((s) => s.id);
@@ -136,8 +138,8 @@ export default function ServiceScreen(props) {
                   <td> {data.unit} </td>
                   <td> {data.description} </td>
                   <td style={{width: 80}}>
-                    <img className='mx-2'  src="./edit.svg" onClick={() => updateService(data)} />
-                    <img src="./add.svg" onClick={() => {setForm2(data); setShowAddServiceIntoRoom(true)}} />
+                    <img alt='edit' className='mx-2'  src="./edit.svg" onClick={() => updateService(data)} />
+                    <img alt='add' src="./add.svg" onClick={() => {setForm2(data); setShowAddServiceIntoRoom(true)}} />
                   </td>
                 </tr>
               ))}

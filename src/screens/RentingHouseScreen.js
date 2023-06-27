@@ -1,7 +1,7 @@
-import NarBar from "../components/NavBar"
 import RentingHouseModal from "../components/Modal/RentingHouseModal"
 import React, {useEffect, useState } from 'react'
 import callApi from "../fetchApi/callApiHaveToken"
+
 
 export default function RentingHouseScreen(props){
   const [houses, setHouses] = useState([])
@@ -40,8 +40,8 @@ export default function RentingHouseScreen(props){
   
   return (
     <>
-      <div className="container container-screen">
-        <div className="d-flex rounded-1 flex-column main-tab">
+      <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
+        <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
           <div className="d-flex flex-row align-items-center mb-2 border-bottom">
             <div style={{fontSize: 30}}>
               Danh sách khu trọ
@@ -58,7 +58,7 @@ export default function RentingHouseScreen(props){
             <thead>
               <tr>
                 <th>
-                  <input class="form-check-input" type="checkbox" checked={checked1.length == houses.length} 
+                  <input class="form-check-input" type="checkbox" checked={checked1.length === houses.length} 
                     onChange={(e) => {
                       if (e.target.checked) {
                         const allHouses = houses.map((h) => h.id);
@@ -91,7 +91,7 @@ export default function RentingHouseScreen(props){
                   <td> {data.location} </td>
                   <td> {data.description} </td>
                   <td>
-                    <img src="./edit.svg" onClick={() => {setForm2(data);setShow2(true);}}/>
+                    <img alt="edit" src="./edit.svg" onClick={() => {setForm2(data);setShow2(true);}}/>
                   </td>
                 </tr>
               ))}

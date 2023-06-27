@@ -90,7 +90,32 @@ p {
 
 .hidden { display:none; }
 
-.EMPTY_ROOM{border-color: #39B5E0;} 
-.USING_ROOM{border-color: #A31ACB;} 
-.DEPOSIT_ROOM{border-color: #FF78F0} 
-.STOP_ROOM {border-color: #F5EA5A} 
+.EMPTY_ROOM{
+    border-radius: 0.25rem;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 3px solid #39B5E0;
+} 
+.USING_ROOM{
+    border-radius: 0.25rem;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 3px solid #A31ACB;
+    
+} 
+.DEPOSIT_ROOM{
+    border-radius: 0.25rem;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 3px solid #FF78F0;
+} 
+.STOP_ROOM {
+    border-radius: 0.25rem;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 3px solid #F5EA5A;
+} 

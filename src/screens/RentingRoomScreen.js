@@ -1,4 +1,3 @@
-import NarBar from "../components/NavBar"; 
 import { useState, useEffect } from 'react';
 import callApi from "../fetchApi/callApiHaveToken";
 import RentingRoomModal from "../components/Modal/RentingRoomModal";
@@ -81,15 +80,15 @@ export default function RentingRoomScreen(props){
   }
 
   const createRoom = () => {
-    if (houses.filter((item) => item.id == houseId)[0]) 
-      setHouseName(houses.filter((item) => item.id == houseId)[0].name)
+    if (houses.filter((item) => item.id === houseId)[0]) 
+      setHouseName(houses.filter((item) => item.id === houseId)[0].name)
     setForm1({house_id: houseId})
     setShow1(true)
   }
 
   const editRoom = (data) => {
-    if (houses.filter((item) => item.id == houseId)[0]) 
-      setHouseName(houses.filter((item) => item.id == houseId)[0].name)
+    if (houses.filter((item) => item.id === houseId)[0]) 
+      setHouseName(houses.filter((item) => item.id === houseId)[0].name)
 
     async function fetchRoomService(roomId){
       const d = await callApi('/service/room/' + roomId, false, 'GET')
@@ -134,7 +133,7 @@ export default function RentingRoomScreen(props){
             <thead>
               <tr>
                 <th>
-                  <input class="form-check-input" type="checkbox" checked={checked.length == rooms.length} 
+                  <input class="form-check-input" type="checkbox" checked={checked.length === rooms.length} 
                     onChange={(e) => {
                       if (e.target.checked) {
                         const all= rooms.map((r) => r.id);
@@ -172,7 +171,7 @@ export default function RentingRoomScreen(props){
                   <td> {roomStatus[data.status]} </td>
                   <td> {data.description} </td>
                   <td>
-                    <img src="./edit.svg" onClick={() => editRoom(data)}/>
+                    <img alt='edit' src="./edit.svg" onClick={() => editRoom(data)}/>
                   </td>
                 </tr>
               ))}

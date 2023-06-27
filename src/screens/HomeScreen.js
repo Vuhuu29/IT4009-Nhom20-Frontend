@@ -1,57 +1,54 @@
-import NarBar from "../components/NavBar";  
 import RoomView from "../components/RoomView";
 import callApi from "../fetchApi/callApiHaveToken";
 import React, {useEffect, useState } from 'react'
-import Toast from 'react-bootstrap/Toast';
+
 
 export default function HomeScreen(props){
 
   const [rooms, setRooms] = useState([])
   const [houses, setHouses] = useState([])
   const [houseId, setHouseId] = useState()
-  const [emptyRoom, setEmptyRoom] = useState(0)
-  const [usingRoom, setUsingRoom] = useState(0)
-  const [depositRoom, setDepositRoom] = useState(0)
-  const [stopRoom, setStopRoom] = useState(0)
-  const [show, setShow] = useState(false)
-  const [noti, setNoti] = useState("Woohoo, you're reading this text in a Toast!")
+  const [state, setState] = useState({empty: 0, using: 0, deposit: 0, stop: 0})
 
-  useEffect(() => {
-    async function fetchDataHouse(){
-      const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
-        if (d.status) {
-          setHouses(d.data)
-          fetchDataRoom(d.data[0].id)
-        } else {
-          setNoti({
-            header: 'Fail to load data', 
-            msg: d.msg
-          })
-          setShow(true)
-        }
+  async function fetchHouse(){
+    const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
+    if (d.status) {
+      setHouses(d.data)
+      if (d.data.length > 0) setHouseId(d.data[0].id)
     }
+      
+    else 
+    props.toastNoti(d.msg)
+  }
 
-    fetchDataHouse()
-  }, [])
-
-  async function fetchDataRoom(houseId){
-    if(houseId) {
+  async function fetchRoom(){
+    if(houseId){
       const d = await callApi('/room/house/' + houseId, false, 'GET')
       if (d.status) {
         setRooms(d.data)
-      } else {
-        setNoti({
-          header: 'Fail to load data', 
-          msg: d.msg
-        })
-        setShow(true)
+        for(let i in d.data) {
+          if (d.data[i].status === "EMPTY_ROOM") setState({...state, empty: state.empty + 1})
+          else if (d.data[i].status === "USING_ROOM") setState({...state, using: state.using + 1})
+          else if (d.data[i].status === "DEPOSIT_ROOM") setState({...state, deposit: state.deposit + 1})
+          else if (d.data[i].status === "STOP_ROOM") setState({...state, stop: state.stop + 1})
+        }
+        console.log(state)
+        console.log(d.data)
       }
+        
+      else 
+        props.toastNoti(d.msg)
     }
   }
 
+  useEffect(() => {
+    fetchHouse()
+  }, [])
+
   useEffect( () => {
-    fetchDataRoom(houseId)
-  } ,[houseId])
+    fetchRoom()
+  } ,[houseId, fetch])
+
 
   const NotLogin = () => {
     return (
@@ -148,7 +145,7 @@ export default function HomeScreen(props){
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#39B5E0"/>
                 </svg>
                 <div style={{width: 134}}>Phòng trống</div>
-                <div className="mx-1">{emptyRoom}</div>
+                <div className="mx-1">{state.empty}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1 border-end">
@@ -156,7 +153,7 @@ export default function HomeScreen(props){
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#A31ACB"/>
                 </svg>
                 <div style={{width: 134}}>Phòng đã được thuê</div>
-                <div className="mx-1">{usingRoom}</div>
+                <div className="mx-1">{state.using}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1 border-end">
@@ -164,7 +161,7 @@ export default function HomeScreen(props){
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#FF78F0"/>
                 </svg>
                 <div style={{width: 134}}>Phòng đặt cọc</div>
-                <div className="mx-1">{depositRoom}</div>
+                <div className="mx-1">{state.deposit}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1">
@@ -172,7 +169,7 @@ export default function HomeScreen(props){
                   <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#F5EA5A"/>
                 </svg>
                 <div style={{width: 134}}>Phòng dừng sử dụng</div>
-                <div className="mx-1">{stopRoom}</div>
+                <div className="mx-1">{state.stop}</div>
               </div>
 
             </div>
@@ -189,10 +186,6 @@ export default function HomeScreen(props){
           
         </div>
       </div>
-      <Toast show={show} onClose={() => {setShow(!show)}} style={{position: 'fixed', top: 8, right: 8, zIndex: 2, backgroundColor: '#d9edf7'}}>
-        <Toast.Header><b className="me-auto">{(noti.header) ? noti.header : 'Thông báo'}</b></Toast.Header>
-        { (noti.msg) ?  <Toast.Body>{noti.msg}</Toast.Body> : <></>}
-      </Toast>
     </>
       
     )

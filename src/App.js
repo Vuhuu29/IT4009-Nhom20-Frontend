@@ -1,11 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navigate } from 'react-router';
 import BillScreen from "./screens/BillScreen";
 import CovenantScreen from "./screens/CovenantScreen";
-import FinanceScreen from "./screens/FinanceScreen";
 import HomeScreen from "./screens/HomeScreen";
-import IncidentScreen from "./screens/IncidentScreen";
 import RentingHouseScreen from "./screens/RentingHouseScreen";
 import AccountScreen from "./screens/AccountScreen";
 import LoginRegisterScreen from "./screens/LoginRegisterScreen";
@@ -17,7 +14,6 @@ import LayoutRenter from "./screens/Client/layout/LayoutRenter";
 import DashbroadRenter from "./screens/Client/dashbroad/DashbroadRenter";
 import Myhouse from "./screens/Client/myhouse/Myhouse";
 import MyBill from "./screens/Client/bill/bill";
-import My404Component from "./screens/NotFoundScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
 import { useState } from "react";
 import { Toast } from "react-bootstrap";
@@ -56,18 +52,7 @@ function App() {
                 <CovenantScreen toastNoti={toastNoti}/>
               </>
             }/>
-            <Route path="/finance" element={
-              <>
-                <NarBar/>
-                <FinanceScreen toastNoti={toastNoti}/>
-              </>
-            }/>
-            <Route path="/incident" element={
-              <>
-                <NarBar/>
-                <IncidentScreen toastNoti={toastNoti}/>
-              </>
-              }/>
+            
             <Route path="/rentinghouse" element={
               <>
                 <NarBar/>

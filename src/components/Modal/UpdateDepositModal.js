@@ -75,7 +75,7 @@ export default function UpdateDepositModal (props) {
                     <div className="col-2" style={{fontWeight: 500}}> Giới tính </div>
 
                     <div className="col-4">
-                        {(props.form) ? props.form.renter_gender : undefined}
+                        {(props.form) ? ((props.form.renter_gender == 'male') ? 'Nam' : 'Nữ' ) : undefined}
                     </div>
                 </div>
 

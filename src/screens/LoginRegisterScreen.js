@@ -7,9 +7,9 @@ export default function LoginRegisterScreen(props){
 
     // check token exist or not to redirect to home screen
     if (localStorage.getItem("token")) {
-      if (localStorage.getItem("userRole") == "owner")
+      if (localStorage.getItem("userRole") === "owner")
         window.location = "/";
-      else if (localStorage.getItem("userRole") == "renter")
+      else if (localStorage.getItem("userRole") === "renter")
         window.location = "/client";
       // check role of user to redirect to correct screen
     } else

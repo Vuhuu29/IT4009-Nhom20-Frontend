@@ -5,7 +5,7 @@ export default function NarBar() {
         await localStorage.removeItem("token")
         await localStorage.removeItem("UserRole")
         await localStorage.removeItem("UserId")
-        window.location.href = "/"
+        window.location.href = "http://localhost:3000/"
     }
     
     return (
@@ -23,7 +23,6 @@ export default function NarBar() {
                             <li><a className="dropdown-item" href="rentinghouse">Khu trọ</a></li>
                             <li><a className="dropdown-item" href="rentingroom">Phòng trọ</a></li>
                             <li><a className="dropdown-item" href="services">Dịch vụ</a></li>
-                            <li><a className="dropdown-item" href="#">Thiết bị</a></li>
                         </ul>
                     </li>
                     
@@ -42,9 +41,7 @@ export default function NarBar() {
                             <li><a className="dropdown-item" href="#">Xuất phiếu chi</a></li>
                         </ul>
                     </li>
-                    <li className="nav-item">
-                        <a href="finance" className="nav-link" >Thu chi</a>
-                    </li>
+                    
                     <li className="nav-item">
                         <a href="account" className="nav-link">Hồ sơ</a>
                     </li>

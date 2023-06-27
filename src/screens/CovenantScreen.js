@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import CreateCovenantModal from "../components/Modal/CreateCovenantModal";
 import UpdateCovenantModal from "../components/Modal/UpdateCovenantModal";
 import callApi from "../fetchApi/callApiHaveToken";
+import '../style/css/form.css'
 
 export default function CovenantScreen(props){
     const [covenants, setCovenants] = useState([])
@@ -53,7 +54,7 @@ export default function CovenantScreen(props){
         let s = true
         for (var i in checked) {
           const d = await callApi('/covenant/' + checked[i] , false, 'DELETE')
-          if (d.status) s = false 
+          if (!d.status) s = false 
         }
 
         setChecked([])
@@ -67,9 +68,10 @@ export default function CovenantScreen(props){
     }
 
     const addCovenant = () => {
-      setHouseName(houses.filter((h) => h.id == houseId)[0].name)
+      if (houses.filter((h) => h.id == houseId)[0])
+        setHouseName(houses.filter((h) => h.id == houseId)[0].name)
       setShow1(true)
-      setForm1({...form1, house_id: houseId})
+      setForm1({house_id: houseId})
     }
 
     const updateCovenant = (data) => {
@@ -79,7 +81,7 @@ export default function CovenantScreen(props){
 
     return (
       <>
-        <div className="container container-screen">
+        <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
           <div className="d-flex rounded-1 flex-column main-tab">
             <div className="d-flex flex-row align-items-center mb-2 border-bottom">
                 <div style={{fontSize: 30}}>
@@ -131,6 +133,7 @@ export default function CovenantScreen(props){
                     <th scope="col"> Ngày hết hạn </th>
                     <th scope="col"> Trả trước </th>
                     <th scope="col"> Ngày trả </th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
