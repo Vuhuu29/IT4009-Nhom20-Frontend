@@ -39,14 +39,22 @@ export default function BillScreen(props) {
   const handleModalClose = (data) => {
     // Xử lý dữ liệu từ modal ở đây
     console.log("close modal", data); // In ra dữ liệu nhận được từ modal
-    if(data.action =='add'){
+    if (data.action == 'add') {
       setBills([
         ...bills,
         data.bill
       ])
+    } else if (data.action == 'edit') {
+      setBills(bills.map((bill) => {
+        if (bill.id == data.bill.id) {
+          return data.bill
+        }
+        return bill
+      }))
     }
     // Đóng modal
     setShowModal(false);
+    fetchBills()
   };
 
 
@@ -204,7 +212,19 @@ export default function BillScreen(props) {
 
   }, [bills, time])
 
-
+  const handleDeleteBill = async (billId) => {
+    try {
+      // Gọi API để xóa hóa đơn với billId đã cho
+      const d= await callApi(`/bill/${billId}`, false, 'DELETE');
+      if (d.status) {
+        setBills(bills.filter((bill) => bill.id !== billId));
+      }
+    
+    } catch (error) {
+      // Xử lý lỗi khi xóa hóa đơn
+      // ...
+    }
+  };
   return (
     <>
       <NarBar />
@@ -222,24 +242,24 @@ export default function BillScreen(props) {
 
           <div className="d-flex flex-row align-items-center mb-2">
             <div style={{ fontSize: 20 }} className="py-1">
-                Đã tạo {bills? bills.
+              Đã tạo {bills ? bills.
                 filter((bill) => {
                   const billDate = new Date(bill.created_at);
                   const selectedDate = new Date(time);
                   return billDate.getMonth() === selectedDate.getMonth() && billDate.getFullYear() === selectedDate.getFullYear();
                 }).length : 0} hóa đơn / Số hợp đồng cần tạo thêm: {covenantsCanCreateBill.length}
-            </div>  
+            </div>
 
 
             {/* <button type="button" className="btn btn-outline-info ms-auto">
               Xuất nhiều
             </button> */}
             <button type="button" className="btn btn-outline-info ms-auto" onClick={handleAddNewBill}
-                hidden={
-                  !covenantsCanCreateBill.length ||
-                  (new Date(time).getFullYear() != new Date().getFullYear() ||
-                    new Date(time).getMonth() != new Date().getMonth())
-                }
+              hidden={
+                !covenantsCanCreateBill.length ||
+                (new Date(time).getFullYear() != new Date().getFullYear() ||
+                  new Date(time).getMonth() != new Date().getMonth())
+              }
 
             >Thêm mới</button>
 
@@ -282,11 +302,11 @@ export default function BillScreen(props) {
                 <th scope="col">Nợ cũ</th>
                 <th scope="col">Tổng tiền</th>
                 <th scope="col">Trạng thái</th>
-                <th></th>
+                <th  style={{ width: '44px' }}></th>
               </tr>
             </thead>
-            <tbody> 
-              {bills? bills.
+            <tbody>
+              {bills ? bills.
                 filter((bill) => {
                   const billDate = new Date(bill.created_at);
                   const selectedDate = new Date(time);
@@ -296,6 +316,7 @@ export default function BillScreen(props) {
                   // console.log(data  )
                   return (
                     <tr key={index}>
+           
                       <td>{index + 1}</td>
                       <td scope="row">{format(new Date(data.created_at), 'dd/MM/yyyy')}</td>
                       <td>{data.room_name}</td>
@@ -310,12 +331,16 @@ export default function BillScreen(props) {
                           {data.status === 'UNPAID' ? 'Chưa thanh toán' : data.status === 'PENDING' ? 'Đang chờ' : 'Đã thanh toán'}
                         </span>
                       </td>
-                      <td><img src="./edit.svg" onClick={() => handleEditBill(data)} /></td>
+                      <td className="d-flex justify-content-center">
+                        <img src="./edit.svg" onClick={() => handleEditBill(data)} className="px-1" />
+                        {data.status == 'UNPAID'? <img src={"./trash.svg"} alt="xóa hóa đơn"  onClick={() => handleDeleteBill(data.id)}/> : null}
+
+                      </td>
                     </tr>
                   )
                 }
                 ) : null}
-              {bills?bills.filter((bill) => {
+              {bills ? bills.filter((bill) => {
                 const billDate = new Date(bill.created_at);
                 const selectedDate = new Date(time);
                 return billDate.getMonth() === selectedDate.getMonth() && billDate.getFullYear() === selectedDate.getFullYear();
@@ -323,13 +348,13 @@ export default function BillScreen(props) {
                   <tr>
                     <td colSpan={9} className="text-center">Không có dữ liệu</td>
                   </tr>
-                ) :null}
+                ) : null}
             </tbody>
           </table>
         </div>
         {showModal && (
           <BillModal data={selectedBill} isAddingBill={isAddingBill}  {...(isAddingBill && { covenantsCanCreateBill })}
-          show={showModal} onClose={handleModalClose} onHide={() => setShowModal(false)} time={time} />
+            show={showModal} onClose={handleModalClose} onHide={() => setShowModal(false)} time={time} />
         )}
 
       </div>
