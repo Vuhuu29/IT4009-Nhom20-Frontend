@@ -1,7 +1,7 @@
 import {Modal, Button} from 'react-bootstrap'
 import React, {useEffect, useState } from 'react'
 import callApi from '../../fetchApi/callApiHaveToken'
-import '../../style/css/form.css'
+
 
 export default function RentingHouseModal(props) {
     const createHouse = () => {

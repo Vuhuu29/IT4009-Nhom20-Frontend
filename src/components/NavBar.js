@@ -1,11 +1,10 @@
-import 'bootstrap/dist/css/bootstrap.css';
+
 
 export default function NarBar() {
     const  logoutHandle = async () => {
         await localStorage.removeItem("token")
         await localStorage.removeItem("UserRole")
         await localStorage.removeItem("UserId")
-        window.location.href = "http://localhost:3000/"
     }
     
     return (
@@ -46,7 +45,7 @@ export default function NarBar() {
                         <a href="account" className="nav-link">Hồ sơ</a>
                     </li>
                     <li className="nav-item">
-                        <a href="" className="nav-link" onClick={() => logoutHandle()}>Đăng xuất</a>
+                        <a href="/" className="nav-link" onClick={() => logoutHandle()}> Đăng xuất </a>
                     </li>
                 </ul>
             </nav>

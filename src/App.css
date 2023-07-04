@@ -4,7 +4,7 @@
   background-color: #f0f2f5;
   font-family: "Poppins", Arial, sans-serif;
   color: black;
-  padding-bottom: 20px;
+  height: 100vh;
 }
 
 .nav-item:hover>.nav-link {

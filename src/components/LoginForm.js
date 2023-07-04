@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../style/css/form.css'
 import { useDispatch, useSelector } from 'react-redux'
 import *as actions from '../actions/index'
 

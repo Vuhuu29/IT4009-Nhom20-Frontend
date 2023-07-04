@@ -1,4 +1,3 @@
-import '../style/css/form.css'
 export default function RoomView(props) {
     return (
     <div className={"m-5 p-2 " + props.room.status} style={{background: '#fdeeee', boxShadow: 'rgba(0, 0, 0, 0.34) 0px 5px 20px -17px', position: 'relative', width: '90%'}}>

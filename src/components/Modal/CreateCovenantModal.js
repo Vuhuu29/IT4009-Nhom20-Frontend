@@ -1,7 +1,6 @@
 import {Modal, Button} from 'react-bootstrap';
 import { useState, useEffect } from 'react'; 
 import callApi from '../../fetchApi/callApiHaveToken';
-import '../../style/css/form.css'
 
 export default function CreateCovenantModal(props) {
 

@@ -1,4 +1,5 @@
 import "./App.css";
+import './style/css/form.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BillScreen from "./screens/BillScreen";
 import CovenantScreen from "./screens/CovenantScreen";
@@ -33,63 +34,23 @@ function App() {
     <div className="App">
       {(localStorage.getItem('token')) ? 
         <BrowserRouter>
-          <Routes>
-            <Route path="/" exact element={
-              <>
-                <NarBar/>
-                <HomeScreen toastNoti={toastNoti}/>
-              </>
-              }/>
-            <Route path="/bill" element={
-              <>
-                <NarBar/>
-                <BillScreen toastNoti={toastNoti}/>
-              </>
-            }/>
-            <Route path="/covenant" element={
-              <>
-                <NarBar/>
-                <CovenantScreen toastNoti={toastNoti}/>
-              </>
-            }/>
-            
-            <Route path="/rentinghouse" element={
-              <>
-                <NarBar/>
-                <RentingHouseScreen toastNoti={toastNoti}/>
-              </>
-            }/>
-            <Route path="/account" element={
-              <>
-                <NarBar/>
-                <AccountScreen toastNoti={toastNoti}/>
-              </>
-            }/>
-            <Route path="/rentingroom" element={
-              <>
-                <NarBar/>
-                <RentingRoomScreen toastNoti={toastNoti}/>
-              </>
-              }/>
-            <Route path="/services" element={
-              <>
-                <NarBar/>
-                <ServiceScreen toastNoti={toastNoti}/>
-              </>
-            }/>
-            <Route path="/deposit" element={
-              <>
-                <NarBar/>
-                <DepositScreen toastNoti={toastNoti}/>
-              </>
-              }/>
-            <Route path="/renter" element={
-              <> 
-                <NarBar/>
-                <RenterScreen toastNoti={toastNoti}/>
-              </>
-              }/>
 
+          <NarBar/>
+
+          <Routes>
+            <Route path="/" exact element={<HomeScreen toastNoti={toastNoti}/>}/>
+
+            <Route path="/rentinghouse" element={<RentingHouseScreen toastNoti={toastNoti}/>}/>
+            <Route path="/rentingroom" element={<RentingRoomScreen toastNoti={toastNoti}/>}/>
+            <Route path="/services" element={<ServiceScreen toastNoti={toastNoti}/>}/>
+
+            <Route path="/covenant" element={<CovenantScreen toastNoti={toastNoti}/>}/>
+            <Route path="/deposit" element={<DepositScreen toastNoti={toastNoti}/>}/>
+            <Route path="/renter" element={<RenterScreen toastNoti={toastNoti}/>}/>
+
+            <Route path="/bill" element={<BillScreen toastNoti={toastNoti}/>}/>
+
+            <Route path="/account" element={<AccountScreen toastNoti={toastNoti}/>}/>
 
             <Route path="/client/" element={<LayoutRenter toastNoti={toastNoti}/>}>
               <Route path="/client/" element={<DashbroadRenter toastNoti={toastNoti}/>} />

@@ -135,9 +135,9 @@ export default function HomeScreen(props){
   const Logged = () => {
     return (
     <>
-      <div className="container" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
-        <div className="d-flex rounded-1 flex-column" style={{backgroundColor: '#fff', width: '100%', padding: 20, boxShadow: '0px 5px 20px -17px rgba(0, 0, 0, 0.34)'}}>
-          <div className="d-flex flex-row">
+      <div className="container container-screen">
+        <div className="d-flex rounded-1 flex-column main-tab" >
+          <div className="d-flex flex-row border-bottom pb-2">
 
             <div className="ms-auto border d-flex flex-row me-5 rounded-1" style={{fontSize: 14}}>
               <div className="d-flex align-items-center w-25 me-1 ms-1 border-end">
