@@ -1,6 +1,6 @@
 import { Card, CardContent, Container, Divider, Grid, Typography } from "@mui/material";
 import callApi from "../../../fetchApi/callApiHaveToken";
-import React, {useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns';
 
 export default function Myhouse() {
@@ -10,22 +10,22 @@ export default function Myhouse() {
         try {
             // const response = await callApi('/room/3', false , 'get')
 
-            const rs = await callApi('/covenant/renter/'+ localStorage.getItem("userId"), false , 'get')
+            const rs = await callApi('/covenant/renter/' + localStorage.getItem("userId"), false, 'get')
             console.log(rs.data)
             setAllInfor(rs.data)
             // const room = await callApi('/room/3', false , 'get')
-        }catch (error) {
+        } catch (error) {
             console.log(error)
         }
     }
 
     async function getService() {
         try {
-            const rs = await callApi('/service/room/'+ allInfo.room?.id, false , 'get')
+            const rs = await callApi('/service/room/' + allInfo.room?.id, false, 'get')
             console.log(rs.data)
             setAllService(rs.data)
             // const room = await callApi('/room/3', false , 'get')
-        }catch (error) {
+        } catch (error) {
             console.log(error)
         }
     }
@@ -36,7 +36,8 @@ export default function Myhouse() {
 
     useEffect(() => {
         console.log(allInfo.owner);
-        // getService();
+        // if (allInfo && allInfo.room)
+        //     getService();
     }, [allInfo]);
 
     return (
@@ -62,7 +63,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Chủ nhà:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.owner?.name|| null}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.owner?.name || null}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -71,7 +72,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Số điện thoại:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.owner?.phone}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.owner?.phone}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -80,7 +81,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Địa chỉ:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.owner?.email}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.owner?.email}</Typography>
                                     </Grid>
                                 </Grid>
                             </CardContent>
@@ -102,7 +103,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Tên phòng:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.room?.name}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.room?.name}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -120,7 +121,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Số người ở tối đa:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.room?.maxUser}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.room?.maxUser}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -129,7 +130,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Giá phòng:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.room?.cost}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.room?.cost}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
@@ -138,7 +139,7 @@ export default function Myhouse() {
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Mô tả:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo.room?.description}</Typography>
+                                        <Typography variant="h6" component="div">{allInfo?.room?.description}</Typography>
                                     </Grid>
                                 </Grid>
                             </CardContent>
@@ -157,28 +158,43 @@ export default function Myhouse() {
                             <CardContent>
                                 <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
                                     <Grid item xs={4}>
-                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Ngày bắt đầu:</Typography>
+                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Người thuê:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
                                         <Typography variant="h6" component="div">
-                                        {allInfo.covenant?.end_date ?format(new Date(allInfo.covenant?.started_date), 'dd/MM/yyyy'): null}
+                                            {allInfo?.user?.name}
                                         </Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
                                 <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
                                     <Grid item xs={4}>
-                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Ngày kết thúc:</Typography>
+                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Ngày bắt đầu:</Typography>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">  
-                                            {allInfo.covenant?.end_date ?format(new Date(allInfo.covenant?.end_date), 'dd/MM/yyyy'): null}
+                                        <Typography variant="h6" component="div">
+                                            {allInfo?.covenant?.end_date ? format(new Date(allInfo?.covenant?.started_date), 'dd/MM/yyyy') : null}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                                <Divider variant="middle" />
+                                <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                                    <Grid item xs={4}>
+                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>
+                                            Ngày kết thúc:
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                        <Typography variant="h6" component="div">
+                                            {allInfo?.covenant?.end_date ? format(new Date(allInfo?.covenant?.end_date), 'dd/MM/yyyy') : null}
                                         </Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" />
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Danh sách dịch vụ hàng tháng:</Typography>
+                                    <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>
+                                      <b> Danh sách dịch vụ hàng tháng:</b> 
+                                    </Typography>
                                 </Grid>
                                 <Grid item xs={12} className="pt-2">
                                     <table className="table table-bordered">
@@ -187,46 +203,28 @@ export default function Myhouse() {
                                                 <th scope="col">STT</th>
                                                 <th scope="col">Tên dịch vụ</th>
                                                 <th scope="col">Đơn giá</th>
-                                                <th scope="col">Số lượng</th>
-                                                <th scope="col">Thành tiền</th>
+                                                <th scope="col">Mô tả</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {allInfo?.room?.service
+                                                ? allInfo?.room?.service.map((item, index) => (
+                                                    <tr key={index}>
+                                                        <th scope="row">{index + 1}</th>
+                                                        <td>{item.name}</td>
+                                                        <td>{item.cost}</td>
+                                                        <td>{item.description}</td>
+                                                    </tr>
+                                                ))
+                                                : null
+                                            }
+                                        </tbody>
+                                        {/* <tfoot>
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>Nước</td>
-                                                <td>10.000đ</td>
-                                                <td>2</td>
-                                                <td>20.000đ</td>
+                                                <th scope="row" colSpan="3">Tổng tiền</th>
+                                                <td>86.000đ</td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Điện</td>
-                                                <td>3.000đ</td>
-                                                <td>2</td>
-                                                <td>6.000đ</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Wifi</td>
-                                                <td>50.000đ</td>
-                                                <td>1</td>
-                                                <td>50.000đ</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">4</th>
-                                                <td>Rác</td>
-                                                <td>10.000đ</td>
-                                                <td>1</td>
-                                                <td>10.000đ</td>
-                                            </tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th scope="row" colSpan="4">Tổng tiền</th>
-                                                    <td>86.000đ</td>
-                                                </tr>
-                                            </tfoot>
+                                        </tfoot> */}
                                     </table>
                                 </Grid>
                             </CardContent>
@@ -234,7 +232,7 @@ export default function Myhouse() {
                     </Grid>
                 </Grid>
             </Container>
-            
+
 
 
         </>

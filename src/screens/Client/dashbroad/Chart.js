@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 import Title from './Title';
+import { useEffect, useState } from "react"
+import { format } from 'date-fns';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -20,15 +22,25 @@ const data = [
   createData('24:00', undefined),
 ];
 
-export default function Chart() {
+export default function Chart({ listBill }) {
   const theme = useTheme();
+  const [money , setMoney] = useState([])
+
+  useEffect(() => {
+    let arr = []
+    listBill.map((data) => {
+      arr.push(createData(format(new Date(data.created_at), 'MM/yyyy'),( data.total_price - data.debt)))
+    })
+    // console.log(arr)
+    setMoney(arr.reverse())
+  }, [listBill])
 
   return (
     <React.Fragment>
       <Title>Today</Title>
       <ResponsiveContainer>
         <LineChart
-          data={data}
+          data={money}
           margin={{
             top: 16,
             right: 16,
@@ -54,7 +66,7 @@ export default function Chart() {
                 ...theme.typography.body1,
               }}
             >
-              Sales ($)
+              Hóa đơn ($)
             </Label>
           </YAxis>
           <Line
