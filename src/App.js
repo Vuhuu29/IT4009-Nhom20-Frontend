@@ -26,8 +26,12 @@ function App() {
   const [hideNotis, setHideNotis] = useState([])
 
   const toastNoti = (n) => {
+    const first_notis = notis
     setNotis([...notis, n])
     setShow(true)
+    setTimeout(function() {
+      setNotis(first_notis)
+    }, 2000)
   }
 
   return (

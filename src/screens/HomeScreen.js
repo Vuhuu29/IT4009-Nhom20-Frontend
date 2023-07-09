@@ -2,6 +2,13 @@ import RoomView from "../components/RoomView";
 import callApi from "../fetchApi/callApiHaveToken";
 import React, {useEffect, useState } from 'react'
 
+function BoxIcon (props) {
+  return (
+    <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill={props.color}/>
+    </svg>
+  )
+}
 
 export default function HomeScreen(props){
 
@@ -141,33 +148,27 @@ export default function HomeScreen(props){
 
             <div className="ms-auto border d-flex flex-row me-5 rounded-1" style={{fontSize: 14}}>
               <div className="d-flex align-items-center w-25 me-1 ms-1 border-end">
-                <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#39B5E0"/>
-                </svg>
+                
+                <BoxIcon color='#39B5E0'/>
                 <div style={{width: 134}}>Phòng trống</div>
                 <div className="mx-1">{state.empty}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1 border-end">
-                <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#A31ACB"/>
-                </svg>
+                <BoxIcon color='#A31ACB' />
                 <div style={{width: 134}}>Phòng đã được thuê</div>
                 <div className="mx-1">{state.using}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1 border-end">
-                <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#FF78F0"/>
-                </svg>
+                
+                <BoxIcon color='#FF78F0' />
                 <div style={{width: 134}}>Phòng đặt cọc</div>
                 <div className="mx-1">{state.deposit}</div>
               </div>
 
               <div className="d-flex align-items-center w-25 me-1">
-                <svg className="me-1" width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.5 0C0.671573 0 0 0.671574 0 1.5V13.5C0 14.3284 0.671573 15 1.5 15H13.5C14.3284 15 15 14.3284 15 13.5V1.5C15 0.671573 14.3284 0 13.5 0H1.5Z" fill="#F5EA5A"/>
-                </svg>
+                <BoxIcon color='#F5EA5A' />
                 <div style={{width: 134}}>Phòng dừng sử dụng</div>
                 <div className="mx-1">{state.stop}</div>
               </div>

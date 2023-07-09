@@ -4,7 +4,6 @@ import callApi from "../fetchApi/callApiHaveToken"
 export default function AccountScreen(props){
   const defaulUser = {
     "phone": "",
-    "password": "",
     "name": "",
     "birthday": null,
     "gender": null,
@@ -39,13 +38,14 @@ export default function AccountScreen(props){
 
   const updatePassword = () => {
     async function updatePassword(){
+      
       const data = await callApi('/user/password/' + localStorage.getItem('userId'), 
         { newPassword: form2.newPassword, oldPassword: form2.oldPassword }, 'PUT')
       
       props.toastNoti(data.msg)
     }
-    if(form2.newPassword !== form2.newRePassword)
-      props.toastNoti({msg: 'RePassword not match'})
+    if(form2.newPassword != form2.reNewPassword)
+      props.toastNoti('RePassword not match')
     else 
       updatePassword()
   }
@@ -205,7 +205,7 @@ export default function AccountScreen(props){
                 <div className="row d-flex align-items-center">
                   <div className="col-3"> Mật khẩu cũ * </div>
                   <div className="col-9">
-                    <input type="text" class="form-control text-input"
+                    <input type="password" class="form-control text-input" id="oldPassword"
                     onChange={(e) => {
                       setForm2({
                           ...form2,
@@ -219,7 +219,7 @@ export default function AccountScreen(props){
                 <div className="row d-flex align-items-center">
                   <div className="col-3"> Mật khẩu mới * </div>
                   <div className="col-9">
-                    <input type="text" class="form-control text-input" 
+                    <input type="password" class="form-control text-input" id="newPassword"
                     onChange={(e) => {
                       setForm2({
                           ...form2,
@@ -233,7 +233,7 @@ export default function AccountScreen(props){
                 <div className="row d-flex align-items-center mb-2">
                   <div className="col-3"> Nhập lại mật khẩu mới * </div>
                   <div className="col-9">
-                    <input type="text" class="form-control text-input"
+                    <input type="password" class="form-control text-input" id="reNewPassword"
                     onChange={(e) => {
                       setForm2({
                           ...form2,

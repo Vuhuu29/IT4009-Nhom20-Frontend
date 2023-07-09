@@ -119,11 +119,11 @@ export default function RentingRoomScreen(props){
           </div>
 
           <div className="d-flex flex-row align-items-center mb-2">
-              {/* Button thêm mới phòng */}
+              
               <button type="button" class="btn btn-outline-info ms-auto" onClick = {createRoom} >
                   Thêm mới
               </button> 
-              {/* Thêm được thì thêm phần nhập excel, xuất excel, tìm kiếm */}
+              
               <button type="button" class="btn btn-outline-info ms-2" onClick = {deleteRoom} >
                   Xóa 
               </button>
