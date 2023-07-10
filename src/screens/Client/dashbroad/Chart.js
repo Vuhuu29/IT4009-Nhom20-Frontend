@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, CartesianGrid } from 'recharts';
 import Title from './Title';
 import { useEffect, useState } from "react"
 import { format } from 'date-fns';
@@ -10,26 +10,15 @@ function createData(time, amount) {
   return { time, amount };
 }
 
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', undefined),
-];
 
 export default function Chart({ listBill }) {
   const theme = useTheme();
-  const [money , setMoney] = useState([])
+  const [money, setMoney] = useState([])
 
   useEffect(() => {
     let arr = []
-    listBill.map((data) => {
-      arr.push(createData(format(new Date(data.created_at), 'MM/yyyy'),( data.total_price - data.debt)))
+    listBill.slice(0, 10).map((data) => {
+      arr.push(createData(format(new Date(data.created_at), 'MM/yyyy'), (data.total_price - data.debt)))
     })
     // console.log(arr)
     setMoney(arr.reverse())
@@ -37,13 +26,13 @@ export default function Chart({ listBill }) {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Tiền nhà</Title>
       <ResponsiveContainer>
         <LineChart
           data={money}
           margin={{
             top: 16,
-            right: 16,
+            right: 24,
             bottom: 0,
             left: 24,
           }}
@@ -66,16 +55,20 @@ export default function Chart({ listBill }) {
                 ...theme.typography.body1,
               }}
             >
-              Hóa đơn ($)
+              Hóa đơn
             </Label>
           </YAxis>
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
           <Line
             isAnimationActive={false}
             type="monotone"
             dataKey="amount"
+            name='Tiền: '
             stroke={theme.palette.primary.main}
             dot={false}
           />
+
         </LineChart>
       </ResponsiveContainer>
     </React.Fragment>

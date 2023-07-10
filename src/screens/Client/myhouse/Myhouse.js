@@ -116,15 +116,19 @@ export default function Myhouse() {
                                     </Grid>
                                 </Grid>
                                 <Divider variant="middle" /> */}
-                                <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
-                                    <Grid item xs={4}>
-                                        <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Số người ở tối đa:</Typography>
-                                    </Grid>
-                                    <Grid item xs={8}>
-                                        <Typography variant="h6" component="div">{allInfo?.room?.maxUser}</Typography>
-                                    </Grid>
-                                </Grid>
-                                <Divider variant="middle" />
+                                {allInfo?.room?.maxUser || allInfo?.room?.maxUser < 0 ?
+                                    <>
+                                        <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                                            <Grid item xs={4}>
+                                                <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Số người ở tối đa:</Typography>
+                                            </Grid>
+                                            <Grid item xs={8}>
+                                                <Typography variant="h6" component="div">{allInfo?.room?.maxUser}</Typography>
+                                            </Grid>
+                                        </Grid>
+                                        <Divider variant="middle" />
+                                    </>
+                                : null}
                                 <Grid container spacing={1} alignItems="center" sx={{ mb: 1 }}>
                                     <Grid item xs={4}>
                                         <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>Giá phòng:</Typography>
@@ -193,7 +197,7 @@ export default function Myhouse() {
                                 <Divider variant="middle" />
                                 <Grid item xs={12}>
                                     <Typography variant="h6" component="div" sx={{ fontWeight: 'normal' }}>
-                                      <b> Danh sách dịch vụ hàng tháng:</b> 
+                                        <b> Danh sách dịch vụ hàng tháng:</b>
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12} className="pt-2">

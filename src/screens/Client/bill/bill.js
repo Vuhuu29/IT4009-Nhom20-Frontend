@@ -53,6 +53,7 @@ export default function MyBill() {
                                 <th scope="col">Mã hóa đơn</th>
                                 <th scope="col">Ngày nộp</th>
                                 <th scope="col">Tổng tiền</th>
+                                <th scope="col">Đã trả</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Chi tiết</th>
                             </tr>
@@ -66,6 +67,7 @@ export default function MyBill() {
                                         {format(new Date(data.created_at), 'dd/MM/yyyy')}
                                     </td>
                                     <td>{data.total_price?.toLocaleString('en-US')}</td>
+                                    <td>{(data.paid??0)?.toLocaleString('en-US')}</td>
                                     <td>
                                         {/* {data.status} */}
                                         <span
@@ -94,15 +96,15 @@ export default function MyBill() {
                             <table className="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th className="text-left">Tên dịch vụ</th>
-                                        <th className="text-right">Đơn giá</th>
-                                        <th className="text-right">Số lượng</th>
-                                        <th className="text-right">Thành tiền</th>
+                                        <th className="text-left" align="left">Tên dịch vụ</th>
+                                        <th className="text-right" align="right">Đơn giá</th>
+                                        <th className="text-right" align="right">Số lượng</th>
+                                        <th className="text-right" align="right">Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row" >Giá phòng</th>
+                                        <td scope="row" >Giá phòng</td>
                                         <td align="right">{myRoom?.cost?.toLocaleString('en-US')}</td>
                                         <td align="right">1</td>
                                         <td align="right">{myRoom?.cost?.toLocaleString('en-US')}</td>
@@ -110,18 +112,18 @@ export default function MyBill() {
 
                                     {listBillDetail?.services && listBillDetail?.services.map((data) => (
                                         <tr>
-                                            <th scope="row" align="right">{data.name}</th>
+                                            <td scope="row" align="left">{data.name}</td>
                                             <td align="right">{data.cost?.toLocaleString('en-US')}</td>
                                             <td align="right">{data.num?.toLocaleString('en-US')}</td>
                                             <td align="right">{(data.cost ?? 0 * data.num ?? 0).toLocaleString('en-US')}</td>
                                         </tr>
                                     ))}
                                     <tr className="bg-primary">
-                                        <th className="text-danger" scope="row" colSpan={3}>Nợ cũ</th>
-                                        <td className="text-danger" align="right">{(listBillDetail?.debt ?? 0).toLocaleString('en-US')}</td>
+                                        <td className="text-danger bg-warning" scope="row" colSpan={3}>Nợ cũ</td>
+                                        <td className="text-danger  bg-warning" align="right">{(listBillDetail?.debt ?? 0).toLocaleString('en-US')}</td>
                                     </tr>
                                     <tr>
-                                        <th className="text-light bg-info" scope="row" colSpan={3}>Tổng</th>
+                                        <td className="text-light bg-info" scope="row" colSpan={3}>Tổng</td>
                                         <td className="text-light bg-info" align="right">{(listBillDetail?.total_price ?? 0).toLocaleString('en-US')}</td>
                                     </tr>
 

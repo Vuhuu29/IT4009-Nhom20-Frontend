@@ -78,7 +78,7 @@ export default function BillScreen(props) {
     try {
       const d = await callApi('/room/house/' + houseId, false, 'GET')
       if (d.status) {
-        setRooms(d.data)
+        setRooms(d.data??[])
       } else {
         //xử lý error
       }
@@ -142,7 +142,7 @@ export default function BillScreen(props) {
           }
           return bill
         });
-        // console.log("bill", bills)
+        console.log("bill", bills)
         setBills(bills)
       } else {
         //xử lý error
@@ -167,6 +167,7 @@ export default function BillScreen(props) {
   useEffect(() => {
     const fetchData = async () => {
       if (houseId) {
+        setBills([])
         await fetchRoom();
         await fetchRenter();
       }
@@ -181,7 +182,7 @@ export default function BillScreen(props) {
   }, [rooms, renters])
 
   useEffect(() => {
-    if (covenants.length != 0)
+    // if (covenants.length != 0)
       fetchBills()
 
   }, [covenants])
@@ -247,7 +248,7 @@ export default function BillScreen(props) {
                   const billDate = new Date(bill.created_at);
                   const selectedDate = new Date(time);
                   return billDate.getMonth() === selectedDate.getMonth() && billDate.getFullYear() === selectedDate.getFullYear();
-                }).length : 0} hóa đơn / Số hợp đồng cần tạo thêm: {covenantsCanCreateBill.length}
+                }).length : 0} hóa đơn 
             </div>
 
 
@@ -306,7 +307,7 @@ export default function BillScreen(props) {
               </tr>
             </thead>
             <tbody>
-              {bills ? bills.
+              { bills ? bills.
                 filter((bill) => {
                   const billDate = new Date(bill.created_at);
                   const selectedDate = new Date(time);

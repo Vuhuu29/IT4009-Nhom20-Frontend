@@ -31,6 +31,9 @@ export default function NarBarRenter() {
                         <li className="nav-item">
                             <Link to="bill" className="nav-link">Hóa đơn</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link to="account" className="nav-link">Tài khoản</Link>
+                        </li>
                         {/* <li className="nav-item dropdown">
                             <a href="#" className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Khu trọ

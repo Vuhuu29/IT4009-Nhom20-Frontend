@@ -19,6 +19,7 @@ import NotFoundScreen from "./screens/NotFoundScreen";
 import { useState } from "react";
 import { Toast } from "react-bootstrap";
 import NarBar from "./components/NavBar";
+import AccountRenterScreen from "./screens/Client/account/account";
 
 function App() {
   const [show, setShow] = useState(true)
@@ -60,6 +61,7 @@ function App() {
               <Route path="/client/" element={<DashbroadRenter toastNoti={toastNoti}/>} />
               <Route path="/client/room" element={<Myhouse toastNoti={toastNoti}/>} />
               <Route path="/client/bill/" element={<MyBill toastNoti={toastNoti}/>} />
+              <Route path="/client/account/" element={<AccountRenterScreen toastNoti={toastNoti}/>} />
             </Route>
             
             <Route path="*" element={<NotFoundScreen />} />
