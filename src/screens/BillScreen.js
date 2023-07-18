@@ -60,7 +60,7 @@ export default function BillScreen(props) {
 
   async function fetchHouse() {
     try {
-      const d = await callApi('/house', false, 'GET')
+      const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
       if (d.status) {
         setHouses(d.data)
         if (d.length != 0)
@@ -78,7 +78,7 @@ export default function BillScreen(props) {
     try {
       const d = await callApi('/room/house/' + houseId, false, 'GET')
       if (d.status) {
-        setRooms(d.data??[])
+        setRooms(d.data ?? [])
       } else {
         //xử lý error
       }
@@ -179,16 +179,19 @@ export default function BillScreen(props) {
   useEffect(() => {
     if (rooms.length != 0 && renters.length != 0)
       fetchCovenance()
+    else
+      setCovenantsCanCreateBill([])
   }, [rooms, renters])
 
   useEffect(() => {
     // if (covenants.length != 0)
-      fetchBills()
+    if (covenants.length == 0) setCovenantsCanCreateBill([])
+    fetchBills()
 
   }, [covenants])
 
   useEffect(() => {
-    if (bills && time) {
+    if (bills != null && time) {
       const billInMonth = bills.filter((bill) => {
         const billDate = new Date(bill.created_at);
         const selectedDate = new Date(time);
@@ -216,11 +219,11 @@ export default function BillScreen(props) {
   const handleDeleteBill = async (billId) => {
     try {
       // Gọi API để xóa hóa đơn với billId đã cho
-      const d= await callApi(`/bill/${billId}`, false, 'DELETE');
+      const d = await callApi(`/bill/${billId}`, false, 'DELETE');
       if (d.status) {
         setBills(bills.filter((bill) => bill.id !== billId));
       }
-    
+
     } catch (error) {
       // Xử lý lỗi khi xóa hóa đơn
       // ...
@@ -248,7 +251,7 @@ export default function BillScreen(props) {
                   const billDate = new Date(bill.created_at);
                   const selectedDate = new Date(time);
                   return billDate.getMonth() === selectedDate.getMonth() && billDate.getFullYear() === selectedDate.getFullYear();
-                }).length : 0} hóa đơn 
+                }).length : 0} hóa đơn
             </div>
 
 
@@ -256,7 +259,7 @@ export default function BillScreen(props) {
               Xuất nhiều
             </button> */}
             <button type="button" className="btn btn-outline-info ms-auto" onClick={handleAddNewBill}
-              hidden={
+              disabled={ 
                 !covenantsCanCreateBill.length ||
                 (new Date(time).getFullYear() != new Date().getFullYear() ||
                   new Date(time).getMonth() != new Date().getMonth())
@@ -303,11 +306,11 @@ export default function BillScreen(props) {
                 <th scope="col">Nợ cũ</th>
                 <th scope="col">Tổng tiền</th>
                 <th scope="col">Trạng thái</th>
-                <th  style={{ width: '44px' }}></th>
+                <th style={{ width: '44px' }}></th>
               </tr>
             </thead>
             <tbody>
-              { bills ? bills.
+              {bills ? bills.
                 filter((bill) => {
                   const billDate = new Date(bill.created_at);
                   const selectedDate = new Date(time);
@@ -317,7 +320,7 @@ export default function BillScreen(props) {
                   // console.log(data  )
                   return (
                     <tr key={index}>
-           
+
                       <td>{index + 1}</td>
                       <td scope="row">{format(new Date(data.created_at), 'dd/MM/yyyy')}</td>
                       <td>{data.room_name}</td>
@@ -334,7 +337,7 @@ export default function BillScreen(props) {
                       </td>
                       <td className="d-flex justify-content-center">
                         <img src="./edit.svg" onClick={() => handleEditBill(data)} className="px-1" />
-                        {data.status == 'UNPAID'? <img src={"./trash.svg"} alt="xóa hóa đơn"  onClick={() => handleDeleteBill(data.id)}/> : null}
+                        {data.status == 'UNPAID' ? <img src={"./trash.svg"} alt="xóa hóa đơn" onClick={() => handleDeleteBill(data.id)} /> : null}
 
                       </td>
                     </tr>

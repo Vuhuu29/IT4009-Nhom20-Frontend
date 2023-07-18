@@ -430,9 +430,18 @@ export default function BillModal({ show, onClose, onHide, data, time, isAddingB
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={onHide}>Hủy bỏ</Button>
+                    <Button variant="secondary" onClick={()=>onClose({
+                        action: 'edit',
+                        bill: {
+                            room_name: billDetails.room_name,
+                            renter_name: billDetails.renter_name,
+                            room_cost: billDetails.room_cost,
+                            paid: billDetails.paid,
+                            ...billDetails.data,
+                        }
+                    })}>Hủy bỏ</Button>
                     {!isEdit && !isAddingBill && !isPayment ? <Button variant="secondary" onClick={() => { setIsEdit(true) }}>Chỉnh sửa</Button> : null}
-                    {isEdit && !isAddingBill && !isPayment? <Button variant="secondary" onClick={onHandleUpdateBill}>Xác nhận</Button> : null}
+                    {isEdit && !isAddingBill && !isPayment ? <Button variant="secondary" onClick={onHandleUpdateBill}>Xác nhận</Button> : null}
                     {/* <Button variant="primary" onClick={onClose}>Xuất hóa đơn</Button> */}
                     {
                         ((billDetails?.status === 'UNPAID' && !isPayment && !isAddingBill)
