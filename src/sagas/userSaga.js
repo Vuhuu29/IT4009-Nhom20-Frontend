@@ -9,7 +9,7 @@ function* login(action) {
       yield put({
           type: types.LOGIN_SUCCESS,
           payload: res
-      })
+      }) //để là LOGIN_SUCCESS nhưng không phải là login success mà là callapi success
   } catch (error) {
       yield put({
           type: types.LOGIN_FAIL,

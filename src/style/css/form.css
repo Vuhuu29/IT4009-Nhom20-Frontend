@@ -114,3 +114,18 @@ p {
     border-bottom: none;
     border-top: 5px solid #F5EA5A;
 } 
+
+.navbar-text{
+    font-size: 18px !important;
+    color: black !important;
+    font-weight: 400 !important;
+}
+
+.navbar-text:hover {
+    color: #e3b04b !important;
+}
+
+.heading{
+    font-size: 30px !important;
+    font-weight: 600 !important;
+}

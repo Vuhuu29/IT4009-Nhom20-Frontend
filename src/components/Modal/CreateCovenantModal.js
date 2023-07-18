@@ -2,6 +2,12 @@ import {Modal, Button} from 'react-bootstrap';
 import { useState, useEffect } from 'react'; 
 import callApi from '../../fetchApi/callApiHaveToken';
 
+const SumMonths =  (d1, months) => {
+    const d = new Date(d1)
+    d.setMonth(d.getMonth() + months)
+    return d.toLocaleDateString("sv-SE")
+}
+
 export default function CreateCovenantModal(props) {
 
     const [roomId, setRoomId] = useState()
@@ -44,7 +50,7 @@ export default function CreateCovenantModal(props) {
                     renter_id: renterData.data.newRenter.id,
                     duration: props.form.duration,
                     started_date: props.form.started_date,
-                    end_date: props.form.end_date,
+                    end_date: props.endDate,
                     pre_pay: props.form.pre_pay,
                     pay_time: props.form.pay_time,
                     note: props.form.note
@@ -164,6 +170,8 @@ export default function CreateCovenantModal(props) {
                         <input type="text" class="form-control text-input" required
                             value={props.form.duration}
                             onChange={(e) => {
+                                if (props.form.started_date) 
+                                    props.setEndDate(SumMonths(props.form.started_date, parseInt(e.target.value)))
                                 props.setForm({
                                     ...props.form, 
                                     duration: e.target.value
@@ -178,6 +186,8 @@ export default function CreateCovenantModal(props) {
                         <input class="form-control" type="date" 
                             value={props.form.started_date}
                             onChange={(e) => {
+                                if(props.form.duration)    
+                                    props.setEndDate(SumMonths(e.target.value, parseInt(props.form.duration)))
                                 props.setForm({
                                     ...props.form,
                                     started_date: e.target.value
@@ -188,15 +198,8 @@ export default function CreateCovenantModal(props) {
 
                     <div style={{fontWeight: 500, width: '6%'}}> đến * </div>
                     <div style={{width: '16%'}}>
-                        <input class="form-control" type="date"
-                            value={props.form.end_date}
-                            onChange={(e) => {
-                                props.setForm({
-                                    ...props.form,
-                                    end_date: e.target.value
-                                })
-                            }}
-                        />
+                        <input class="form-control" type="date" readonly
+                            value={props.endDate}/>
                     </div>
 
                 </div>

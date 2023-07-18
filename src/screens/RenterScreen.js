@@ -71,7 +71,7 @@ export default function RenterScreen(props){
         <div className="container container-screen">
             <div className="d-flex rounded-1 flex-column main-tab">
                 <div className="d-flex flex-row align-items-center mb-2 border-bottom">
-                    <div style={{fontSize: 30}}>
+                    <div className="heading">
                         Quản lý khách thuê
                     </div>
                     <select class="form-select ms-auto w-25" value={houseId} 

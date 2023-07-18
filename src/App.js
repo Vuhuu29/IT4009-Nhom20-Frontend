@@ -20,6 +20,7 @@ import { useState } from "react";
 import { Toast } from "react-bootstrap";
 import NarBar from "./components/NavBar";
 import AccountRenterScreen from "./screens/Client/account/account";
+import AboutUs from "./screens/AboutUs";
 
 function App() {
   const [show, setShow] = useState(true)
@@ -73,6 +74,10 @@ function App() {
           <Routes>
             <Route path="/" exact element={
               <HomeScreen toastNoti={toastNoti}/>
+            }/>
+
+            <Route path="/about" exact element={
+              <AboutUs toastNoti={toastNoti}/>
             }/>
 
             <Route path="/auth" element={

@@ -14,6 +14,7 @@ export default function CovenantScreen(props){
     const [houseName, setHouseName] = useState()
     const [checked, setChecked] = useState([])
     const [fetch, setFetch] = useState(true)
+    const [endDate, setEndDate] = useState()
 
     async function fetchHouse(){
       const d = await callApi('/house/owner/' + localStorage.getItem('userId'), false, 'GET')
@@ -37,6 +38,7 @@ export default function CovenantScreen(props){
           setCovenants(d.data)
         else 
           props.toastNoti(d.msg)
+        console.log(d.data)
       }
     }
 
@@ -75,6 +77,7 @@ export default function CovenantScreen(props){
 
     const updateCovenant = (data) => {
       setForm2(data)
+      setEndDate(data.end_date)
       setShow2(true);
     }
 
@@ -83,7 +86,7 @@ export default function CovenantScreen(props){
         <div className="container container-screen">
           <div className="d-flex rounded-1 flex-column main-tab">
             <div className="d-flex flex-row align-items-center mb-2 border-bottom">
-                <div style={{fontSize: 30}}>
+                <div className="heading">
                     Quản lý hợp đồng
                 </div>
 
@@ -176,6 +179,8 @@ export default function CovenantScreen(props){
           form = {form1} 
           setForm = {setForm1} 
           toastNoti={props.toastNoti}
+          endDate={endDate}
+          setEndDate={setEndDate}
         />
 
         <UpdateCovenantModal
@@ -186,6 +191,8 @@ export default function CovenantScreen(props){
           form = {form2} 
           setForm = {setForm2} 
           toastNoti={props.toastNoti}
+          endDate={endDate}
+          setEndDate={setEndDate}
         />
       </>
     )

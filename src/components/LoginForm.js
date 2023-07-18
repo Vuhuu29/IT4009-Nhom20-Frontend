@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import *as actions from '../actions/index'
 
 export default function LoginFormComponent(props) {
-  const [isAlert, setIsAlert] = useState(false)
-  const [alertMsg, setAlertMsg] = useState()
   const userState = useSelector((state) => state.userState)
   const dispatch = useDispatch()
   const [form, setForm] = useState({})
@@ -12,7 +10,7 @@ export default function LoginFormComponent(props) {
     async function storeState() {
       if (userState.dataFetched) {
         if (userState.status == true) {
-          setIsAlert(false)
+          
           await localStorage.setItem("token", userState.data.token)
           await localStorage.setItem("userId", userState.data.user.id)
           await localStorage.setItem("userRole", userState.data.user.role)
@@ -60,9 +58,7 @@ export default function LoginFormComponent(props) {
                 <div className='form-group'>
                   <button type='button' class="form-control btn btn-primary rounded px-3" onClick={() => {dispatch(actions.login(form))}} >Đăng nhập</button> 
                 </div>
-                <div className={'form-group ' + (isAlert ? "d-block" : "d-none")}>
-                  <div class="alert alert-danger" role="alert" >{alertMsg}</div>
-                </div>
+
                 <div class="form-group d-md-flex">
                   <div class="w-50 ms-auto" style={{textAlign: 'right'}}>
                     <a href="#" style={{color: 'gray'}}>Quên mật khẩu</a>

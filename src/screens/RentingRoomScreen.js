@@ -108,7 +108,7 @@ export default function RentingRoomScreen(props){
       <div className="container container-screen" style={{display: "flex", maxWidth: "100%", padding: '72px 12px 20px 12px', minHeight: '100vh'}}>
         <div className="d-flex rounded-1 flex-column main-tab">
           <div className="d-flex flex-row align-items-center mb-2 border-bottom">
-              <div style={{fontSize: 30}}>
+              <div className="heading">
                   Danh sách phòng trọ
               </div>
               {/* Chọn khu trọ */}

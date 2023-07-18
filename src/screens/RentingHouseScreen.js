@@ -43,7 +43,7 @@ export default function RentingHouseScreen(props){
       <div className="container container-screen">
         <div className="d-flex rounded-1 flex-column main-tab">
           <div className="d-flex flex-row align-items-center mb-2 border-bottom">
-            <div style={{fontSize: 30}}>
+            <div className="heading">
               Danh sách khu trọ
             </div>
             <button type="button" class="btn btn-outline-info ms-auto" onClick = {() => {setForm1({});setShow1(true)}}>

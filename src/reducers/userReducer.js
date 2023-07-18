@@ -13,12 +13,11 @@ export default (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case types.LOGIN_REQ:
             return {
-                ...state,
+                dataFetched: false,
                 isFetching: true
             };
         case types.LOGIN_SUCCESS:
             return {
-                ...state,
                 isFetching: false,
                 dataFetched: true,
                 status: action.payload.status,
